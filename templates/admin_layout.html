@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="layout admin-layout">
+  <aside class="sidecard tabs admin-tabs">
+    <strong>{{ _("Admin Console") }}</strong>
+    <a href="{{ url_for('admin_overview') }}">{{ _("Overview") }}</a>
+    <a href="{{ url_for('admin_users') }}">{{ _("Users") }}</a>
+    <a href="{{ url_for('admin_payments') }}">{{ _("Payments") }}</a>
+    <a href="{{ url_for('admin_plans') }}">{{ _("Plans") }}</a>
+    <a href="{{ url_for('admin_limits') }}">{{ _("Limits") }}</a>
+    <a href="{{ url_for('admin_notifications') }}">{{ _("Notifications") }}</a>
+    <a href="{{ url_for('admin_telegram') }}">{{ _("Telegram") }}</a>
+    <a href="{{ url_for('admin_mailtm') }}">{{ _("Mail.tm") }}</a>
+    <a href="{{ url_for('admin_settings') }}">{{ _("Settings") }}</a>
+    <a href="{{ url_for('admin_backup') }}">{{ _("Backup") }}</a>
+  </aside>
+  <section class="mainpanel">{% block admin_content %}{% endblock %}</section>
+</div>
+{% endblock %}

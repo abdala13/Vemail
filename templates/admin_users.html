@@ -1,0 +1,5 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Users") }}</p><h1>{{ _("User management") }}</h1></div></div>
+<div class="table-card"><table><thead><tr><th>{{ _("User") }}</th><th>Plan</th><th>{{ _("Verified") }}</th><th>{{ _("Telegram") }}</th><th>{{ _("Boxes") }}</th><th>{{ _("Messages") }}</th><th>{{ _("Last activity") }}</th><th></th></tr></thead><tbody>{% for u in users %}<tr><td data-label="User"><b>{{ u.username }}</b></td><td data-label="Plan">{{ u.plan }}</td><td data-label="Verified">{{ 'Yes' if u.verified else 'No' }}</td><td data-label="Telegram">{{ 'Linked' if u.telegram_linked else 'No' }}</td><td data-label="Boxes">{{ u.mailboxes_count }}</td><td data-label="Messages">{{ u.messages_count }}</td><td data-label="Last">{{ u.last_activity or '-' }}</td><td><a class="btn small" href="{{ url_for('admin_user_detail', user_id=u.id) }}">{{ _("Details") }}</a></td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

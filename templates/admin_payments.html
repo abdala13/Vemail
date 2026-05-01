@@ -1,0 +1,42 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead">
+  <div>
+    <p class="eyebrow">{{ _("Payments") }}</p>
+    <h1>{{ _("Payment requests") }}</h1>
+    <p class="muted">{{ _("Review upgrade requests, TXIDs, and user payment status.") }}</p>
+  </div>
+</div>
+<div class="filter-pills">
+  {% for s in ['all','pending','accepted','rejected'] %}
+  <a class="pill {{ 'active' if status==s else '' }}" href="{{ url_for('admin_payments', status=s) }}">{{ _(s|capitalize) }}</a>
+  {% endfor %}
+</div>
+<div class="table-card admin-payment-table section-tight">
+  <table>
+    <thead><tr><th>{{ _("User") }}</th><th>{{ _("Plan") }}</th><th>{{ _("Amount") }}</th><th>{{ _("Network") }}</th><th>{{ _("TXID") }}</th><th>{{ _("Status") }}</th><th>{{ _("Date") }}</th><th>{{ _("Actions") }}</th></tr></thead>
+    <tbody>
+      {% for p in payments %}
+      <tr>
+        <td data-label="{{ _('User') }}"><a class="break" href="{{ url_for('admin_user_detail', user_id=p.user_id) }}"><b>{{ p.username }}</b><br><small>{{ p.primary_email or _("No mailbox") }}</small></a></td>
+        <td data-label="{{ _('Plan') }}">{{ p.plan_label or p.plan }}<br><small>{{ _('Current plan') }}: {{ p.current_plan }}</small></td>
+        <td data-label="{{ _('Amount') }}">USDT {{ p.amount }}</td>
+        <td data-label="{{ _('Network') }}">{{ p.network }}</td>
+        <td data-label="{{ _('TXID') }}" class="break"><code>{{ p.txid or '-' }}</code></td>
+        <td data-label="{{ _('Status') }}"><span class="pill {{ 'active' if p.status=='accepted' else '' }}">{{ _(p.status|capitalize) }}</span>{% if p.decided_at %}<br><small>{{ p.decided_at }}</small>{% endif %}</td>
+        <td data-label="{{ _('Date') }}">{{ p.created_at }}</td>
+        <td data-label="{{ _('Actions') }}" class="actions-cell">
+          {% if p.status == 'pending' %}
+          <form class="inline" method="post" action="{{ url_for('admin_payment_action', payment_id=p.id, action='accept') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn small primary">{{ _("Accept") }}</button></form>
+          <form class="inline" method="post" action="{{ url_for('admin_payment_action', payment_id=p.id, action='reject') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn small">{{ _("Reject") }}</button></form>
+          {% endif %}
+          <form class="inline" method="post" action="{{ url_for('admin_payment_action', payment_id=p.id, action='delete') }}" onsubmit="return confirm('Delete payment request?')"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn small danger">{{ _("Delete") }}</button></form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="8"><p class="muted">{{ _("No payment requests yet.") }}</p></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

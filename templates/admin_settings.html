@@ -1,0 +1,6 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Settings") }}</p><h1>Site settings</h1></div></div>
+<div class="card warning"><h3>Database path</h3><p class="break">{{ db_path }}</p><p>{{ db_warning }}</p></div>
+<form method="post" class="card form section-tight"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% for s in settings %}<label>{{ s.key }}<input name="{{ s.key }}" value="{{ s.value or '' }}"></label>{% endfor %}<label>verification_mode<select name="verification_mode"><option>Telegram Link</option><option>Manual Admin</option><option>Google future</option><option>No verification</option></select></label><button class="btn primary">Save settings</button></form>
+{% endblock %}

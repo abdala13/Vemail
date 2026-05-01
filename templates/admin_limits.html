@@ -1,0 +1,9 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Limits") }}</p><h1>{{ _("Limit intelligence") }}</h1></div></div>
+<div class="cards2">
+{% for u in users %}{% set box_pct = (u.mailbox_count / u.mailbox_limit * 100) if u.mailbox_limit else 0 %}{% set msg_pct = (u.message_count / u.message_history * 100) if u.message_history else 0 %}
+{% if box_pct >= 80 or msg_pct >= 80 or not u.telegram_linked %}<div class="card"><h3>{{ u.username }}</h3><p>{{ _("Plan") }}: {{ u.plan }}</p><p>Mailboxes: {{ u.mailbox_count }}/{{ u.mailbox_limit }}</p><p>Messages: {{ u.message_count }}/{{ u.message_history }}</p><p>Telegram: {{ 'Linked' if u.telegram_linked else 'Missing' }}</p><a class="btn small" href="{{ url_for('admin_user_detail', user_id=u.id) }}">{{ _("View user") }}</a></div>{% endif %}
+{% endfor %}
+</div>
+{% endblock %}

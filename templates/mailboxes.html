@@ -1,0 +1,12 @@
+{% extends 'user_layout.html' %}
+{% block user_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Mailboxes") }}</p><h1>{{ _("Your inboxes") }}</h1><p class="muted">{{ _("Free accounts keep one mailbox. Paid plans can add more.") }}</p></div></div>
+<div class="cards2">
+  {% for b in boxes %}<div class="card mailbox-card"><span class="pill">{{ 'Primary' if b.is_primary else 'Sub' }}</span><h3 class="break">{{ b.address }}</h3><p>Created: {{ b.created_at }}</p>{% if not b.is_primary %}<form method="post" action="{{ url_for('make_primary', box_id=b.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn small">{{ _("Make primary") }}</button></form>{% endif %}</div>{% endfor %}
+</div>
+{% if boxes|length < plan.mailbox_limit %}
+<div class="card section-tight"><h3>{{ _("Create new mailbox") }}</h3><form method="post" action="{{ url_for('create_mailbox') }}" class="toolbar"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input name="local" placeholder="Optional mailbox name"><button class="btn primary">{{ _("Create") }}</button></form></div>
+{% else %}
+<div class="card section-tight upgrade-cta"><h3>{{ _("Mailbox limit reached") }}</h3><p>Your plan allows {{ plan.mailbox_limit }} mailbox(es). Upgrade to create more.</p><a class="btn primary" href="{{ url_for('upgrade') }}">{{ _("Upgrade") }}</a></div>
+{% endif %}
+{% endblock %}

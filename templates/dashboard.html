@@ -1,0 +1,15 @@
+{% extends 'user_layout.html' %}
+{% block user_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("User dashboard") }}</p><h1>{{ _("Welcome") }}, {{ current_user.username }}</h1><p class="muted">{{ _("A simple control center instead of one crowded page.") }}</p></div><a class="btn primary" href="{{ url_for('inbox') }}">{{ _("Open Inbox") }}</a></div>
+<div class="cards4">
+  <div class="card metric"><span>{{ _("Current plan") }}</span><b>{{ plan.label }}</b><small>{{ plan.price }} USDT</small></div>
+  <div class="card metric"><span>{{ _("Primary mailbox") }}</span><b class="break">{{ primary.address if primary else 'None' }}</b><small>{{ _('Verified') if current_user.verified else _('Not verified') }}</small></div>
+  <div class="card metric"><span>{{ _("Telegram") }}</span><b>{{ _('Linked') if current_user.telegram_linked else _('Not linked') }}</b><small>{{ _('Mail alerts on') if current_user.telegram_mail_alerts else _('System alerts only') }}</small></div>
+  <div class="card metric"><span>{{ _("Notifications") }}</span><b data-notification-count>{{ unread_notifications }}</b><small>{{ _("New unread") }}</small></div>
+</div>
+<div class="cards3 section-tight">
+  <div class="card quota"><h3>{{ _("Mailboxes") }}</h3><div class="bar"><i style="width:{{ (boxes|length / plan.mailbox_limit * 100) if plan.mailbox_limit else 0 }}%"></i></div><p>{{ boxes|length }} / {{ plan.mailbox_limit }} {{ _("used") }}</p></div>
+  <div class="card quota"><h3>{{ _("Messages") }}</h3><div class="bar"><i style="width:{{ (message_count / plan.message_history * 100) if plan.message_history else 0 }}%"></i></div><p>{{ message_count }} / {{ plan.message_history }} {{ _("saved") }}</p></div>
+  <div class="card"><h3>{{ _("Next actions") }}</h3><div class="stack"><a class="btn" href="{{ url_for('mailboxes') }}">{{ _("Manage mailboxes") }}</a><a class="btn" href="{{ url_for('upgrade') }}">{{ _("Upgrade account") }}</a></div></div>
+</div>
+{% endblock %}

@@ -1,0 +1,5 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Admin notifications") }}</p><h1>{{ _("System events") }}</h1></div><form method="post" action="{{ url_for('admin_notifications_read_all') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn">{{ _("Mark all read") }}</button></form></div>
+<div class="timeline">{% for n in notifications %}<article class="card note {{ 'unread' if not n.read_at else '' }}"><span class="pill">{{ n.category }}</span><h3>{{ n.title }}</h3><p>{{ n.body }}</p><small>{{ n.created_at }}</small></article>{% else %}<div class="card empty">{{ _("No admin notifications.") }}</div>{% endfor %}</div>
+{% endblock %}

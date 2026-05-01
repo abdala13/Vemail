@@ -1,0 +1,7 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Plans") }}</p><h1>{{ _("Edit SaaS plans") }}</h1><p class="muted">Video fields are removed permanently.</p></div></div>
+<div class="cards3">
+{% for p in plans %}<form class="card form" method="post" action="{{ url_for('admin_update_plan', key=p.key) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><h3>{{ p.label }}</h3><label>{{ _("Price") }}<input name="price" value="{{ p.price }}"></label><label>{{ _("Mailbox limit") }}<input name="mailbox_limit" value="{{ p.mailbox_limit }}"></label><label>{{ _("Domain limit") }}<input name="domain_limit" value="{{ p.domain_limit }}"></label><label>{{ _("Message history") }}<input name="message_history" value="{{ p.message_history }}"></label><label>Can save messages<input name="can_save_messages" value="{{ p.can_save_messages }}"></label><label>Can change primary<input name="can_change_primary_email" value="{{ p.can_change_primary_email }}"></label><label>Telegram mail alerts allowed<input name="telegram_mail_alerts_allowed" value="{{ p.telegram_mail_alerts_allowed }}"></label><button class="btn primary full">{{ _("Save plan") }}</button></form>{% endfor %}
+</div>
+{% endblock %}

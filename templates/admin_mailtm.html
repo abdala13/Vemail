@@ -1,0 +1,20 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Mail.tm") }}</p><h1>{{ _("Mailbox creation diagnostics") }}</h1></div></div>
+<div class="card section-tight">
+  <h3>Status</h3>
+  <p><b>{{ _("Base URL") }}:</b> <span class="break">{{ diag.base }}</span></p>
+  <p><b>{{ _("Status") }}:</b> {{ 'OK' if diag.ok else 'Failed' }}</p>
+  {% if diag.ok %}
+    <p><b>{{ _("Response type") }}:</b> {{ diag.raw_type }}</p>
+    <p><b>{{ _("Domains count") }}:</b> {{ diag.domains_count }}</p>
+    <p><b>{{ _("Sample domains") }}:</b> {{ diag.sample_domains|join(', ') }}</p>
+  {% else %}
+    <p class="danger"><b>{{ _("Error") }}:</b> <span class="break">{{ diag.error }}</span></p>
+  {% endif %}
+</div>
+<div class="card section-tight">
+  <h3>{{ _("Note") }}</h3>
+  <p class="muted">Keep MAILTM_BASE as https://api.mail.tm unless you intentionally use another compatible mail.tm API endpoint.</p>
+</div>
+{% endblock %}

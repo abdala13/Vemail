@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth card narrow">
+  <span class="pill">{{ _("Register with generated mailbox") }}</span>
+  <h1>{{ _("Save your Vemail mailbox") }}</h1>
+  <div class="copyline"><code id="regMailbox">{{ temp.address }}</code><button class="btn small" data-copy-target="regMailbox">{{ _("Copy") }}</button></div>
+  <form method="post" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>{{ _("Username") }}<input name="username" required minlength="3" autocomplete="username"></label>
+    <label>{{ _("Password") }}<div class="password-row"><input name="password" type="password" required minlength="8" autocomplete="new-password"><button type="button" class="eye">👁</button></div></label>
+    <label>{{ _("Confirm password") }}<div class="password-row"><input name="confirm_password" type="password" required minlength="8"><button type="button" class="eye">👁</button></div></label>
+    {% if recaptcha_enabled %}<div class="captcha-wrap"><div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div></div>{% endif %}
+    <button class="btn primary full">{{ _("Create account and verify Telegram") }}</button>
+  </form>
+</section>
+{% endblock %}

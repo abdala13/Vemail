@@ -1,0 +1,49 @@
+{% extends 'user_layout.html' %}
+{% block user_content %}
+<div class="inbox-page">
+  <div class="pagehead inbox-pagehead">
+    <div>
+      <p class="eyebrow">{{ _("Unified inbox") }}</p>
+      <h1>{{ _("All mailbox messages") }}</h1>
+      <p class="muted">{{ _("Messages are loaded only from mailboxes owned by your account.") }}</p>
+    </div>
+    <div class="page-actions inline-actions">
+      <form method="post" action="{{ url_for('inbox_read_all') }}" class="inline-form mark-read-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn ghost mark-read-btn" type="submit">{{ _("Mark inbox read") }}</button>
+      </form>
+      <button class="btn refresh-btn" id="refreshInbox">{{ _("Refresh") }}</button>
+    </div>
+  </div>
+
+  <form class="toolbar inbox-toolbar" method="get">
+    <select name="mailbox">
+      <option value="all" {% if mailbox_filter=='all' %}selected{% endif %}>{{ _("All mailboxes") }}</option>
+      <option value="primary" {% if mailbox_filter=='primary' %}selected{% endif %}>{{ _("Primary only") }}</option>
+      <option value="sub" {% if mailbox_filter=='sub' %}selected{% endif %}>{{ _("Sub only") }}</option>
+      {% for b in boxes %}<option value="{{b.id}}" {% if mailbox_filter==b.id|string %}selected{% endif %}>{{ b.address }}</option>{% endfor %}
+    </select>
+    <input name="q" value="{{ q }}" placeholder="Search subject, sender, body">
+    <button class="btn">{{ _("Search") }}</button>
+  </form>
+
+  <div class="message-list inbox-list" data-limit="10">
+    {% for item in messages %}{% set m=item.row %}
+    <article class="mail-card reveal-item {% if not m.read_at %}unread{% endif %} {% if loop.index>10 %}hidden-more{% endif %}">
+      <div class="mail-main">
+        <h3>{% if not m.read_at %}<span class="unread-dot" title="{{ _('Unread') }}"></span>{% endif %}{{ m.subject or '(No subject)' }}</h3>
+        <p class="muted">{{ _('From') }}: {{ m.sender or _('unknown') }}</p>
+        <p class="mailbox-line"><span class="pill">{{ _('Primary') if m.is_primary else _('Sub') }}</span> <code>{{ m.mailbox_address }}</code></p>
+      </div>
+      <div class="mail-actions">
+        <small>{{ m.received_at or m.created_at }}</small>
+        <a class="btn small" href="{{ url_for('message_detail', message_id=m.id) }}">{{ _("Open") }}</a>
+        {% if item.codes %}<button class="btn small" data-copy-text="{{ item.codes[0] }}">{{ _("Copy code") }}</button>{% endif %}
+        {% if item.links %}<button class="btn small" data-copy-text="{{ item.links[0] }}">{{ _("Copy link") }}</button>{% endif %}
+      </div>
+    </article>
+    {% else %}<div class="empty card">{{ _("No messages yet. Refresh after using your mailbox.") }}</div>{% endfor %}
+  </div>
+  {% if messages|length > 10 %}<button class="btn full" id="showMore">{{ _("Show more") }}</button>{% endif %}
+</div>
+{% endblock %}

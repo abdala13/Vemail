@@ -1,0 +1,38 @@
+{% extends 'user_layout.html' %}
+{% block user_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Account") }}</p><h1>{{ _("Settings") }}</h1><p class="muted">Telegram, password, and paid mail alert controls.</p></div></div>
+<div class="cards2">
+  <div class="card"><h3>{{ _("Account data") }}</h3><p><b>Username:</b> {{ current_user.username }}</p><p><b>{{ _("Plan") }}:</b> {{ plan.label }}</p><p><b>Verified:</b> {{ _('Yes') if current_user.verified else _('No') }}</p></div>
+  <div class="card"><h3>{{ _("Telegram") }}</h3><p>{{ _("Status") }}: <b>{{ _('Linked') if current_user.telegram_linked else _('Not linked') }}</b></p><form method="post" action="{{ url_for('test_telegram_user') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn">{{ _("Send test message") }}</button></form><hr><form method="post" action="{{ url_for('toggle_telegram_mail_alerts') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="enabled" value="{{ 0 if current_user.telegram_mail_alerts else 1 }}"><button class="btn {{ 'primary' if not current_user.telegram_mail_alerts else '' }}">{{ _('Disable') if current_user.telegram_mail_alerts else _('Enable') }} {{ _("email-to-Telegram alerts") }}</button></form>{% if not plan.telegram_mail_alerts_allowed %}<p class="muted">Email message forwarding to Telegram is paid only. System/account notifications still work when Telegram is linked.</p>{% endif %}</div>
+</div>
+<div class="card section-tight"><h3>{{ _("Change password") }}</h3><form method="post" action="{{ url_for('change_password') }}" class="form grid3"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>{{ _("Current password") }}<div class="password-row"><input type="password" name="current_password" required><button type="button" class="eye">👁</button></div></label><label>{{ _("New password") }}<div class="password-row"><input type="password" name="new_password" minlength="8" required><button type="button" class="eye">👁</button></div></label><label>{{ _("Confirm password") }}<div class="password-row"><input type="password" name="confirm_password" minlength="8" required><button type="button" class="eye">👁</button></div></label><button class="btn primary">{{ _("Save password") }}</button></form></div>
+<div class="card section-tight"><h3>{{ _("Browser notifications") }}</h3><p>{{ _("Enable browser notifications to receive native alerts while the site is open or running in the background.") }}</p><button type="button" class="btn primary enable-browser-notifications">{{ _("Enable browser notifications") }}</button><p class="muted">{{ _("For alerts while the site is fully closed, keep Telegram linked or add a server-side push worker later.") }}</p></div>
+
+<div class="card section-tight business-api-card"><h3>Business API</h3>
+{% if business_api_enabled %}
+  <p class="muted">Create secure API keys for business integrations. The API follows your plan limits for mailboxes, domains, and saved messages.</p>
+  {% if new_api_key %}
+  <div class="notice success"><b>Copy your API key now. It will not be shown again.</b><div class="copyline"><code class="break">{{ new_api_key }}</code><button class="btn small copy-btn" type="button" data-copy="{{ new_api_key }}">{{ _("Copy") }}</button></div></div>
+  {% endif %}
+  <form method="post" action="{{ url_for('create_business_api_key') }}" class="toolbar">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input name="label" placeholder="Business API">
+    <button class="btn primary">Create API key</button>
+  </form>
+  <div class="api-doc-box"><code>Authorization: Bearer &lt;api_key&gt;</code><br><code>GET /api/v1/usage</code><br><code>GET /api/v1/mailboxes</code><br><code>POST /api/v1/mailboxes</code><br><code>GET /api/v1/messages</code></div>
+  {% for k in api_keys %}
+    <div class="api-key-row">
+      <div><b>{{ k.label }}</b><br><span class="muted">{{ k.key_prefix }}•••• · Created {{ k.created_at }}{% if k.last_used_at %} · Last used {{ k.last_used_at }}{% endif %}{% if k.revoked_at %} · Revoked {{ k.revoked_at }}{% endif %}</span></div>
+      {% if not k.revoked_at %}<form method="post" action="{{ url_for('revoke_business_api_key', key_id=k.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn danger" onclick="return confirm('Revoke this API key?')">Revoke</button></form>{% endif %}
+    </div>
+  {% else %}
+    <p class="muted">No API keys yet.</p>
+  {% endfor %}
+{% else %}
+  <p class="muted">Business API is available only for the Business plan. It lets teams create mailboxes, read inbox messages, and check quota usage without bypassing package limits.</p>
+  <a class="btn primary" href="{{ url_for('upgrade') }}">{{ _("Upgrade account") }}</a>
+{% endif %}
+</div>
+<div class="card section-tight"><h3>{{ _("Payment history") }}</h3><p>{{ _("Track every upgrade request and admin decision.") }}</p><a class="btn ghost" href="{{ url_for('payment_history') }}">{{ _("Open payment history") }}</a></div>
+<div class="card section-tight"><h3>{{ _("Password recovery") }}</h3><p>Recovery now works in two stages: enter your Vemail mailbox, receive a Telegram reset code, then set a new password.</p><a class="btn ghost" href="{{ url_for('forgot_password') }}">{{ _("Open recovery page") }}</a></div>
+{% endblock %}

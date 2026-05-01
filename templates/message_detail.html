@@ -1,0 +1,43 @@
+{% extends 'user_layout.html' %}
+{% block user_content %}
+<div class="message-page">
+  <div class="pagehead message-pagehead">
+    <div>
+      <p class="eyebrow">{{ _("Message") }}</p>
+      <h1 class="message-title">{{ msg.subject or '(No subject)' }}</h1>
+    </div>
+    <a class="btn back-btn" href="{{ url_for('inbox') }}">{{ _("Back") }}</a>
+  </div>
+
+  <div class="card message-meta-grid">
+    <div class="meta-item"><b>{{ _("From") }}</b><span>{{ msg.sender or 'unknown' }}</span></div>
+    <div class="meta-item"><b>{{ _("To") }}</b><span>{{ msg.recipient }}</span></div>
+    <div class="meta-item"><b>{{ _("Mailbox") }}</b><span>{{ msg.mailbox_address }} · {{ 'Primary' if msg.is_primary else 'Sub' }}</span></div>
+    <div class="meta-item"><b>{{ _("Date") }}</b><span>{{ msg.received_at or msg.created_at }}</span></div>
+  </div>
+
+  <div class="message-tools-grid section-tight">
+    <div class="card message-tool-card">
+      <h3>{{ _("Extracted codes") }}</h3>
+      {% for c in codes %}
+        <div class="copyline"><code>{{ c }}</code><button class="btn small" data-copy-text="{{ c }}">{{ _("Copy") }}</button></div>
+      {% else %}
+        <p class="muted">{{ _("No codes detected.") }}</p>
+      {% endfor %}
+    </div>
+    <div class="card message-tool-card">
+      <h3>{{ _("Extracted links") }}</h3>
+      {% for l in links %}
+        <div class="copyline"><code class="break">{{ l }}</code><a class="btn small" target="_blank" href="{{ l }}">{{ _("Open") }}</a><button class="btn small" data-copy-text="{{ l }}">{{ _("Copy") }}</button></div>
+      {% else %}
+        <p class="muted">{{ _("No links detected.") }}</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card message-body-card">
+    <h3>{{ _("Body") }}</h3>
+    <div class="message-body-text">{{ msg.body or msg.intro or 'No body content.' }}</div>
+  </div>
+</div>
+{% endblock %}

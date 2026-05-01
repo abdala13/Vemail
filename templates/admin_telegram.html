@@ -1,0 +1,56 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Telegram") }}</p><h1>Bot status & settings</h1></div></div>
+
+<div class="cards3">
+  <div class="card metric"><span>Admin Bot</span><b>{{ 'Ready' if status.admin_bot else 'Missing config' }}</b></div>
+  <div class="card metric"><span>User Bot</span><b>{{ 'Ready' if status.user_bot else 'Missing config' }}</b></div>
+  <div class="card metric"><span>Admin Chat ID</span><b>{{ 'Ready' if status.admin_has_chat else 'Missing' }}</b></div>
+</div>
+
+<div class="card section-tight">
+  <h3>Quick Telegram Configuration</h3>
+  <p class="muted">Use this if Render Environment names are different or if you want to edit the bots from the admin panel. Environment values still have priority when present.</p>
+  <form method="post" action="{{ url_for('admin_telegram_save') }}" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Admin Bot Token<input name="admin_telegram_bot_token" value="{{ telegram_settings.admin_telegram_bot_token or '' }}" placeholder="Admin bot token"></label>
+    <label>Admin Chat ID<input name="admin_telegram_chat_id" value="{{ telegram_settings.admin_telegram_chat_id or '' }}" placeholder="Your Telegram numeric chat id"></label>
+    <label>User Bot Token<input name="user_telegram_bot_token" value="{{ telegram_settings.user_telegram_bot_token or '' }}" placeholder="User activation bot token"></label>
+    <label>User Bot Username<input name="user_telegram_bot_username" value="{{ telegram_settings.user_telegram_bot_username or '' }}" placeholder="Example: Vemailsbot"></label>
+    <label>PUBLIC_BASE_URL<input name="public_base_url" value="{{ telegram_settings.public_base_url or status.public_base_url }}" placeholder="https://your-app.onrender.com"></label>
+    <button class="btn primary">Save Telegram settings</button>
+  </form>
+</div>
+
+<div class="card section-tight">
+  <h3>Required User Bot Webhook</h3>
+  <p class="muted">Activation codes are sent only when Telegram calls this webhook after the user presses Start.</p>
+  <div class="copyline tall"><code>{{ status.user_webhook_url }}</code></div>
+  <form method="post" action="{{ url_for('admin_set_user_webhook') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn primary">Set User Bot Webhook</button>
+  </form>
+</div>
+
+<div class="card section-tight">
+  <h3>Admin Bot Test</h3>
+  <p class="muted">Open the Admin Bot in Telegram and press Start first, then click this test.</p>
+  <form method="post" action="{{ url_for('admin_telegram_test') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn primary">Send admin test</button>
+  </form>
+</div>
+
+<div class="grid2">
+  <div class="card section-tight">
+    <h3>User Bot Diagnostics</h3>
+    <p class="break"><b>getMe:</b> {{ status.user_getme }}</p>
+    <p class="break"><b>Webhook:</b> {{ status.user_webhook_info }}</p>
+  </div>
+  <div class="card section-tight">
+    <h3>Admin Bot Diagnostics</h3>
+    <p class="break"><b>getMe:</b> {{ status.admin_getme }}</p>
+    <p><b>PUBLIC_BASE_URL:</b> <span class="break">{{ status.public_base_url }}</span></p>
+  </div>
+</div>
+{% endblock %}

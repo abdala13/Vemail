@@ -1,0 +1,8 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Admin overview") }}</p><h1>{{ _("Business health") }}</h1></div></div>
+<div class="cards4">
+{% for key,label in [('users','Users'),('verified','Verified'),('mailboxes','Mailboxes'),('messages','Messages'),('pending_payments','Pending payments'),('confirmed_revenue','Confirmed USDT'),('expected_revenue','Expected USDT')] %}<div class="card metric"><span>{{ label }}</span><b>{{ kpi[key] }}</b></div>{% endfor %}
+</div>
+<div class="card section-tight chart-card"><h3>{{ _("Last 14 days") }}</h3><div class="chart-wrap"><canvas id="adminChart" data-chart='{{ chart|safe }}'></canvas></div></div>
+{% endblock %}

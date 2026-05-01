@@ -1,0 +1,55 @@
+{% extends 'user_layout.html' %}
+{% block user_content %}
+<div class="pagehead">
+  <div>
+    <p class="eyebrow">{{ _("Upgrade") }}</p>
+    <h1>{{ _("Plans and payment") }}</h1>
+    <p class="muted">{{ _("Payment requests are only available after login. Admin approval sends site and Telegram notifications.") }}</p>
+  </div>
+  <a class="btn ghost" href="{{ url_for('payment_history') }}">{{ _("Open payment history") }}</a>
+</div>
+
+{% if wallet_address %}
+<div class="card payment-wallet section-tight">
+  <div>
+    <p class="eyebrow">{{ _("Payment address") }}</p>
+    <h3>USDT TRC20</h3>
+    <p class="muted">{{ _("Send USDT to this address, then paste your TXID below.") }}</p>
+  </div>
+  <div class="copyline wallet-copy">
+    <code id="walletAddress">{{ wallet_address }}</code>
+    <button class="btn small" type="button" data-copy-target="walletAddress">{{ _("Copy address") }}</button>
+  </div>
+</div>
+{% else %}
+<div class="flash warning section-tight">{{ _("Wallet address is not configured yet. Contact support.") }}</div>
+{% endif %}
+
+<div class="cards3 section-tight">
+{% for p in plans %}
+  <div class="card plan-card">
+    <h3>{{ p.label }}</h3>
+    <p class="price">USDT {{ p.price }}</p>
+    <ul>
+      <li>{{ p.mailbox_limit }} {{ _("mailboxes") }}</li>
+      <li>{{ p.message_history }} {{ _("saved messages") }}</li>
+      <li>{{ p.domain_limit }} {{ _("domain limit") }}</li>
+      <li>{{ _("Telegram mail alerts") }}: {{ _("Allowed") if p.telegram_mail_alerts_allowed else _("No") }}</li>
+    </ul>
+    {% if p.key != 'free' %}
+    <form method="post" action="{{ url_for('upgrade_request') }}" class="form payment-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="plan" value="{{ p.key }}">
+      <div class="payment-summary">
+        <span>{{ _("Amount") }}</span>
+        <strong>USDT {{ p.price }}</strong>
+      </div>
+      <label>{{ _("Network") }}<input name="network" value="TRC20" readonly></label>
+      <label>{{ _("TXID") }}<input name="txid" placeholder="{{ _('Paste transaction ID') }}" required></label>
+      <button class="btn primary full">{{ _("Submit payment request") }}</button>
+    </form>
+    {% endif %}
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

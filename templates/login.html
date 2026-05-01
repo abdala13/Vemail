@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth card narrow">
+  <h1>{{ _("Sign in") }}</h1><p class="muted">{{ _("Use your primary Vemail mailbox, not an external Gmail address.") }}</p>
+  <form method="post" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>{{ _("Primary Vemail address") }}<input name="email" type="email" required autocomplete="email" placeholder="you@domain.com"></label>
+    <label>{{ _("Password") }}<div class="password-row"><input name="password" type="password" required autocomplete="current-password"><button type="button" class="eye">👁</button></div></label>
+    <button class="btn primary full">{{ _("Sign in") }}</button>
+  </form>
+  <p class="muted center"><a href="{{ url_for('forgot_password') }}">{{ _("Forgot password?") }}</a></p>
+</section>
+{% endblock %}

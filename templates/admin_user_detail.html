@@ -1,0 +1,19 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead"><div><p class="eyebrow">User details</p><h1>{{ user.username }}</h1></div><a class="btn" href="{{ url_for('admin_users') }}">{{ _("Back") }}</a></div>
+<div class="cards3"><div class="card"><h3>Data</h3><p>{{ _("Plan") }}: {{ user.plan }}</p><p>Verified: {{ user.verified }}</p><p>Telegram: {{ user.telegram_linked }}</p></div><div class="card"><h3>Change plan</h3><form method="post" action="{{ url_for('admin_change_plan', user_id=user.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><select name="plan">{% for p in plans %}<option value="{{ p.key }}" {% if p.key==user.plan %}selected{% endif %}>{{ p.label }}</option>{% endfor %}</select><button class="btn primary full">Save</button></form></div><div class="card"><h3>{{ _("Actions") }}</h3><form method="post" action="{{ url_for('admin_verify_user', user_id=user.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn">Manual verify</button></form><form method="post" action="{{ url_for('admin_delete_user', user_id=user.id) }}" onsubmit="return confirm('Delete account?')"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn danger">Delete account</button></form></div></div>
+<div class="card section-tight"><h3>Send notification</h3><form method="post" action="{{ url_for('admin_notify_user', user_id=user.id) }}" class="toolbar"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input name="title" placeholder="Title"><input name="body" placeholder="Message"><button class="btn primary">Send</button></form></div>
+<div class="cards2 section-tight"><div class="card"><h3>{{ _("Mailboxes") }}</h3>{% for b in boxes %}<p><span class="pill">{{ 'Primary' if b.is_primary else 'Sub' }}</span> {{ b.address }}</p>{% endfor %}</div><div class="card"><h3>{{ _("Payments") }}</h3>{% for p in payments %}<div class="mini-payment"><b>{{ p.plan_label or p.plan }}</b><span>USDT {{ p.amount }} · {{ p.network }}</span><span class="pill {{ 'active' if p.status=='accepted' else '' }}">{{ _(p.status|capitalize) }}</span><code class="break">{{ p.txid or '-' }}</code></div>{% else %}<p class="muted">{{ _("No payment requests yet.") }}</p>{% endfor %}</div></div>
+
+<div class="card section-tight"><h3>Business API keys</h3>
+  {% if api_keys %}
+    {% for k in api_keys %}
+      <div class="api-key-row">
+        <div><b>{{ k.label }}</b><br><span class="muted">{{ k.key_prefix }}•••• · Created {{ k.created_at }}{% if k.last_used_at %} · Last used {{ k.last_used_at }}{% endif %}{% if k.revoked_at %} · Revoked {{ k.revoked_at }}{% endif %}</span></div>
+        <span class="pill {{ 'active' if not k.revoked_at else '' }}">{{ 'Active' if not k.revoked_at else 'Revoked' }}</span>
+      </div>
+    {% endfor %}
+  {% else %}<p class="muted">No API keys.</p>{% endif %}
+</div>
+<div class="cards2 section-tight"><div class="card"><h3>Recent messages</h3>{% for m in messages %}<p>{{ m.subject or '(no subject)' }}</p>{% else %}<p class="muted">No messages.</p>{% endfor %}</div><div class="card"><h3>{{ _("Notifications") }}</h3>{% for n in notes %}<p>{{ n.title }} · {{ n.category }}</p>{% else %}<p class="muted">No notifications.</p>{% endfor %}</div></div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'user_layout.html' %}
+{% block user_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Notification center") }}</p><h1>{{ _("Notifications") }}</h1><p class="muted">{{ _("Opening the bell does not delete notifications. Mark them read when you choose.") }}</p></div><form method="post" action="{{ url_for('notifications_read_all') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn">{{ _("Mark all read") }}</button></form></div>
+<div class="filter-pills">
+  {% for c,label in [('all','All'),('messages','Messages'),('account','Account'),('limits','Limits'),('plan','Plan')] %}<a class="pill {{ 'active' if cat==c else '' }}" href="{{ url_for('notifications', cat=c) }}">{{ label }}</a>{% endfor %}
+</div>
+<div class="timeline">
+  {% for n in notifications %}<article class="card note {{ 'unread' if not n.read_at else '' }}"><span class="pill">{{ n.category }}</span><h3>{{ n.title }}</h3><p>{{ n.body }}</p><small>{{ n.created_at }}</small>{% if n.action_url %}<a class="btn small" href="{{ n.action_url }}">{{ _("Open") }}</a>{% endif %}</article>{% else %}<div class="empty card">{{ _("No notifications yet.") }}</div>{% endfor %}
+</div>
+{% endblock %}

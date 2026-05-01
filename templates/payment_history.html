@@ -1,0 +1,42 @@
+{% extends 'user_layout.html' %}
+{% block user_content %}
+<div class="pagehead">
+  <div>
+    <p class="eyebrow">{{ _("Payment history") }}</p>
+    <h1>{{ _("Your payment history") }}</h1>
+    <p class="muted">{{ _("Track every upgrade request and admin decision.") }}</p>
+  </div>
+  <a class="btn ghost" href="{{ url_for('upgrade') }}">{{ _("Upgrade") }}</a>
+</div>
+
+<div class="cards4 section-tight payment-summary-cards">
+  <div class="card metric"><span>{{ _("Payment requests") }}</span><b>{{ totals.all }}</b></div>
+  <div class="card metric"><span>{{ _("Pending") }}</span><b>{{ totals.pending }}</b></div>
+  <div class="card metric"><span>{{ _("Accepted") }}</span><b>{{ totals.accepted }}</b></div>
+  <div class="card metric"><span>{{ _("Confirmed revenue") }}</span><b>USDT {{ '%.2f'|format(totals.paid) }}</b></div>
+</div>
+
+<div class="card section-tight payment-history-list">
+  <h3>{{ _("Payment timeline") }}</h3>
+  {% if payments %}
+  <div class="payment-list">
+    {% for p in payments %}
+    <article class="payment-item status-{{ p.status }}">
+      <div class="payment-item-main">
+        <span class="pill {{ 'active' if p.status=='accepted' else '' }}">{{ _(p.status|capitalize) }}</span>
+        <h3>{{ p.plan_label or p.plan }}</h3>
+        <p class="muted">{{ _("Submitted") }}: {{ p.created_at }}{% if p.decided_at %} · {{ _("Decided") }}: {{ p.decided_at }}{% endif %}</p>
+      </div>
+      <div class="payment-item-meta">
+        <strong>USDT {{ p.amount }}</strong>
+        <span>{{ p.network }}</span>
+        <code class="break">{{ p.txid or '-' }}</code>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+    <p class="muted">{{ _("No payment requests yet.") }}</p>
+  {% endif %}
+</div>
+{% endblock %}

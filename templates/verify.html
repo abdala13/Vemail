@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth card verify-card">
+  <span class="pill">{{ _("Telegram activation") }}</span>
+  <h1>{{ _("Activate your account") }}</h1>
+  <p class="muted">Open Telegram, press <b>Start</b>, then the User Bot will send your private activation code. Enter that code here to finish activation.</p>
+  <div class="actions">
+    <a class="btn primary" href="{{ telegram_url }}" target="_blank">{{ _("Open Telegram") }}</a>
+    <button class="btn" data-copy-target="verifyUrl">{{ _("Copy link") }}</button>
+  </div>
+  <div class="copyline tall"><code id="verifyUrl">{{ verify_url }}</code></div>
+  <div class="notice">
+    <b>{{ _("Using a computer?") }}</b><br>
+    Copy the link above, send it to your phone, open it in Telegram, press Start, then return here and type the code the bot sends you.
+  </div>
+  {% if telegram_linked %}
+  <div class="notice success">Telegram chat captured. Now enter the code sent by the bot.</div>
+  {% endif %}
+  <form method="post" class="form split-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>{{ _("Activation code") }}<input name="code" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter code from Telegram"></label>
+    <button class="btn primary">{{ _("Verify code") }}</button>
+  </form>
+</section>
+{% endblock %}

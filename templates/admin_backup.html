@@ -1,0 +1,4 @@
+{% extends 'admin_layout.html' %}
+{% block admin_content %}
+<div class="pagehead"><div><p class="eyebrow">{{ _("Backup") }}</p><h1>{{ _("Download JSON backup") }}</h1><p class="muted">Exports users, mailboxes, messages, notifications, payments, plans, and settings.</p></div><a class="btn primary" href="{{ url_for('admin_backup_json') }}">{{ _("Download JSON backup") }}</a></div>
+{% endblock %}

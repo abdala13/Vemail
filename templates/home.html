@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero grid2">
+  <div>
+    <p class="eyebrow">{{ _("Temporary email SaaS") }}</p>
+    <h1>{{ _("Clean temporary inboxes with Telegram activation.") }}</h1>
+    <p class="muted big">{{ _("Create a mailbox first. Then save it with a username and password. No external Gmail required.") }}</p>
+    <button class="btn primary" id="createTempBtn">{{ _("Create temporary mailbox") }}</button>
+    <a class="btn ghost" href="#plans">{{ _("View plans") }}</a>
+  </div>
+  <div class="card glow" id="tempMailboxCard" {% if not temp %}style="display:none"{% endif %}>
+    <span class="pill">{{ _("Ready to save") }}</span>
+    <h3>{{ _("Your temporary mailbox") }}</h3>
+    <div class="copyline"><code id="tempMailboxText">{{ temp.address if temp else '' }}</code><button class="btn small" data-copy-target="tempMailboxText">{{ _("Copy") }}</button></div>
+    <a class="btn primary full" href="{{ url_for('register') }}">{{ _("Create account to save this mailbox") }}</a>
+  </div>
+</section>
+<section class="section">
+  <h2>{{ _("How it works") }}</h2>
+  <div class="cards3">
+    <div class="card"><b>1</b><h3>{{ _("Create mailbox") }}</h3><p>{{ _("Generate a temporary mail.tm mailbox directly from the home page.") }}</p></div>
+    <div class="card"><b>2</b><h3>{{ _("Save account") }}</h3><p>{{ _("Register using the generated mailbox, username, and password only.") }}</p></div>
+    <div class="card"><b>3</b><h3>{{ _("Verify Telegram") }}</h3><p>{{ _("Open the verification link or enter the code, then use the unified inbox.") }}</p></div>
+  </div>
+</section>
+<section class="section" id="plans">
+  <h2>{{ _("Plans") }}</h2>
+  <div class="cards3">
+    {% for p in plans %}
+    <div class="card plan-card">
+      <h3>{{ p.label }}</h3><p class="price">{{ p.price }} USDT</p>
+      <p>{{ p.mailbox_limit }} mailboxes · {{ p.message_history }} saved messages</p>
+      <p>Telegram mail alerts: {{ 'Yes' if p.telegram_mail_alerts_allowed else 'Paid only' }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
