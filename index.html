@@ -176,7 +176,7 @@
                     <div class="space-y-1">
                         <div class="flex items-center gap-3">
                             <h2 class="text-lg font-bold" id="lblTgTitle">ربط مع تيليجرام (اختياري)</h2>
-                            <span id="tgBadge" class="hidden px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 animate-fade-in">متصل بنجاح</span>
+                            <span id="tgBadge" class="hidden px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 animate-fade-in"> ✔️ </span>
                         </div>
                         <p class="text-slate-400 text-xs md:text-sm leading-relaxed max-w-xl" id="lblTgDesc">استقبل رسائل التفعيل الجديدة مباشرة على حسابك في تيليجرام بدون الحاجة لإبقاء الموقع مفتوحاً.</p>
                     </div>
@@ -218,7 +218,7 @@
                     <div class="flex gap-2">
                         <input id="txtManualChatId" type="text" placeholder="مثال: 123456789" class="flex-grow bg-brand-input border border-brand-border rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-brand-primary text-center" dir="ltr">
                         <button id="btnSaveManualId" class="bg-brand-card hover:bg-brand-primary border border-brand-border hover:border-brand-primary text-white text-xs font-bold px-4 py-2 rounded-lg transition-all whitespace-nowrap">
-                            <span id="lblSaveId">حفظ المعرف</span>
+                            <span id="lblSaveId">إرسال</span>
                         </button>
                     </div>
                 </div>
@@ -326,7 +326,7 @@
                     this.tgCheckInterval = null;
                     
                     this.currentLang = localStorage.getItem('vemail_lang') || 'ar';
-                    this.isDark = localStorage.getItem('vemail_dark') !== '0';
+                    this.isDark = localStorage.getItem('vemail_dark') !== '1';
 
                     this.translations = {
                         ar: {
@@ -336,7 +336,7 @@
                             lblTgTitle: 'ربط مع تيليجرام (اختياري)', lblTgDesc: 'استقبل رسائل التفعيل الجديدة مباشرة على حسابك في تيليجرام بدون الحاجة لإبقاء الموقع مفتوحاً.',
                             lblTgBtn: '🚀 تفعيل بوت تيليجرام', lblTgDisconnect: 'إلغاء الارتباط', lblStep1: '1. اضغط على الزر لفتح البوت وتفعيل الكود الخاص بك:',
                             lblWaitingTg: 'ننتظر الاتصال...', lblLaunchApp: 'فتح تطبيق تيليجرام', lblManualIdFallback: 'لم يتم الربط تلقائياً؟ أدخل معرّف المحادثة (Chat ID) المرسل من البوت:',
-                            lblSaveId: 'حفظ المعرف', lblAdFeed: 'ADSENSE FEED - إعلان وسط الصندوق', lblInboxTitle: 'صندوق الوارد المباشر',
+                            lblSaveId: 'إرسال', lblAdFeed: 'ADSENSE FEED - إعلان وسط الصندوق', lblInboxTitle: 'صندوق الوارد المباشر',
                             lblAutoCheckText: 'تحديث تلقائي مستمر', lblEmptyState: 'الصندوق فارغ حالياً. بانتظار وصول الرسائل...',
                             lblAttachments: 'المرفقات:', toastCopied: 'تم نسخ البريد بنجاح!', toastLinked: 'تم ربط تيليجرام بنجاح!',
                             toastUnlinked: 'تم إلغاء ربط تيليجرام', toastNewMsg: 'رسالة جديدة واردة!', toastErr: 'حدث خطأ، يرجى المحاولة مجدداً',
