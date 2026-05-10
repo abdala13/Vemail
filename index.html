@@ -410,7 +410,7 @@
                 if (storedProcessed) { try { this.processedMessageIds = JSON.parse(storedProcessed); } catch (e) { this.processedMessageIds = []; } }
             }
 
-            // [الحل الجذري لمشكلة تغير الإيميل]: الاعتماد اللحظي والموثوق على الجلسة المخزنة
+            // الاعتماد اللحظي والموثوق على الجلسة المخزنة لضمان عدم تغير الإيميل
             async bootAccountEngine() {
                 const session = localStorage.getItem('vemail_account');
                 if (session) {
@@ -422,12 +422,11 @@
                             this.revealEmailAddress();
                             this.startInboxMonitoring();
                             
-                            // فحص صامت في الخلفية بدون ترويسات تكسر الـ CORS
+                            // فحص صامت في الخلفية للتأكد من استمرار الحساب
                             fetch(`${this.apiBase}/me`, {
                                 headers: { 'Authorization': `Bearer ${this.token}`, 'Accept': 'application/json' }
                             }).then(res => {
                                 if (res.status === 401) {
-                                    console.warn('الحساب انتهى من المصدر، جاري توليد جديد...');
                                     this.regenerateAccount();
                                 }
                             }).catch(e => {});
@@ -490,45 +489,52 @@
 
             startInboxMonitoring() {
                 this.checkInbox();
-                this.pollInterval = setInterval(() => this.checkInbox(), 4000);
+                // فحص بمعدل آمن 100% لتجنب الحظر
+                this.pollInterval = setInterval(() => this.checkInbox(), 4500);
             }
 
             stopInboxMonitoring() { if (this.pollInterval) clearInterval(this.pollInterval); }
             checkInboxForce() { this.checkInbox(true); }
 
-            // [الحل الجذري لمشكلة توقف وصول الرسائل]: إزالة ترويسات منع الكاش لتجنب الـ CORS Block
+            // [الحل الجذري النهائي للرسائل وتيليجرام]: الاعتماد على الـ List Endpoint الخفيفة فقط
             async checkInbox(force = false) {
                 if (!this.token) return;
                 try {
-                    const res = await fetch(`${this.apiBase}/messages?page=1&_cb=${Date.now()}`, {
+                    const res = await fetch(`${this.apiBase}/messages?page=1&_t=${Date.now()}`, {
+                        method: 'GET',
                         headers: { 
                             'Authorization': `Bearer ${this.token}`,
                             'Accept': 'application/json'
                         }
                     });
                     
+                    if (res.status === 401) {
+                        this.forceRegenerateAccount();
+                        return;
+                    }
+
                     if (!res.ok) return;
+                    
                     const data = await res.json();
                     const incomingArray = data['hydra:member'] || [];
 
                     let newFound = false;
                     document.getElementById('msgCounter').innerText = incomingArray.length;
 
+                    const tgChatId = localStorage.getItem('telegram_chat_id');
+
+                    // قراءة البيانات الأولية الخفيفة فورياً وبدون عمل fetch ثقيل إضافي
                     for (const msg of incomingArray) {
                         if (!this.messages.has(msg.id)) {
-                            const detailRes = await fetch(`${this.apiBase}/messages/${msg.id}?_cb=${Date.now()}`, {
-                                headers: { 'Authorization': `Bearer ${this.token}`, 'Accept': 'application/json' }
-                            });
-                            const fullMsg = await detailRes.json();
-                            
-                            this.messages.set(msg.id, fullMsg);
+                            this.messages.set(msg.id, msg);
                             newFound = true;
 
-                            const tgChatId = localStorage.getItem('telegram_chat_id');
+                            // إرسال الإشعار لتيليجرام لحظياً باستخدام بيانات المقدمة (intro)
                             if (tgChatId && !this.processedMessageIds.includes(msg.id)) {
                                 this.processedMessageIds.push(msg.id);
                                 localStorage.setItem('vemail_processed', JSON.stringify(this.processedMessageIds));
-                                this.dispatchTelegramForwarding(tgChatId, fullMsg);
+                                
+                                this.dispatchTelegramForwarding(tgChatId, msg);
                             }
                         }
                     }
@@ -537,6 +543,14 @@
                         this.renderInboxUI();
                         if (newFound && !force) this.showToast(this.translations[this.currentLang].toastNewMsg, 'success');
                     }
+
+                    const emptyState = document.getElementById('emptyInboxState');
+                    if (this.messages.size > 0 && emptyState) {
+                        emptyState.classList.add('hidden');
+                    } else if (emptyState) {
+                        emptyState.classList.remove('hidden');
+                    }
+
                 } catch (error) {}
             }
 
@@ -563,7 +577,7 @@
                             <div class="space-y-1 overflow-hidden w-full">
                                 <h4 class="font-bold text-sm md:text-base text-white truncate group-hover:text-brand-primary transition-colors">${msg.subject || 'بدون عنوان'}</h4>
                                 <div class="flex items-center gap-2 text-xs text-slate-400 truncate font-mono">
-                                    <span class="truncate">${msg.from.name || ''} &lt;${msg.from.address}&gt;</span>
+                                    <span class="truncate">${msg.from?.name || ''} &lt;${msg.from?.address || ''}&gt;</span>
                                 </div>
                             </div>
                         </div>
@@ -578,27 +592,52 @@
                 }
             }
 
-            openReadingPane(msgId) {
-                const msg = this.messages.get(msgId); if (!msg) return;
-                document.getElementById('readSubject').innerText = msg.subject || 'بدون عنوان';
-                document.getElementById('readFrom').innerText = `${msg.from.name || ''} <${msg.from.address}>`;
+            // جلب تفاصيل الـ HTML يتم فقط عندما يضغط المستخدم على قراءة الرسالة
+            async openReadingPane(msgId) {
+                document.getElementById('readingPaneModal').classList.remove('hidden'); 
+                document.getElementById('readingPaneModal').classList.add('flex');
 
+                const cachedMsg = this.messages.get(msgId);
+                document.getElementById('readSubject').innerText = cachedMsg ? (cachedMsg.subject || 'بدون عنوان') : 'جاري التحميل...';
+                document.getElementById('readFrom').innerText = cachedMsg ? `${cachedMsg.from?.name || ''} <${cachedMsg.from?.address || ''}>` : '';
+                
                 const iframe = document.getElementById('readContentFrame');
-                const contentHtml = msg.html || Object.values(msg.html || {})[0] || `<div style="white-space: pre-wrap; font-family: monospace;">${msg.text || ''}</div>`;
-                iframe.srcdoc = contentHtml;
+                iframe.srcdoc = '<div style="padding: 20px; font-family: sans-serif; color: #888; text-align: center;">جاري جلب محتوى الرسالة...</div>';
 
-                const drawer = document.getElementById('attachmentsDrawer'); const wrapper = document.getElementById('attachmentsWrapper'); wrapper.innerHTML = '';
-                if (msg.attachments && msg.attachments.length > 0) {
-                    drawer.classList.remove('hidden'); drawer.classList.add('flex');
-                    for (const att of msg.attachments) {
-                        const btn = document.createElement('button');
-                        btn.className = 'bg-brand-card hover:bg-brand-primary text-slate-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wide border border-brand-border transition-all flex items-center gap-1.5';
-                        btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg><span class="truncate max-w-[120px]">${att.filename}</span>`;
-                        btn.onclick = () => this.downloadAttachment(msg.id, att.id, att.filename); wrapper.appendChild(btn);
+                try {
+                    const res = await fetch(`${this.apiBase}/messages/${msgId}?_t=${Date.now()}`, { 
+                        headers: { 'Authorization': `Bearer ${this.token}`, 'Accept': 'application/json' } 
+                    });
+                    
+                    if (res.ok) {
+                        const fullMsg = await res.json();
+                        this.messages.set(msgId, fullMsg);
+
+                        document.getElementById('readSubject').innerText = fullMsg.subject || 'بدون عنوان';
+                        document.getElementById('readFrom').innerText = `${fullMsg.from?.name || ''} <${fullMsg.from?.address || ''}>`;
+
+                        const contentHtml = fullMsg.html || (fullMsg.text ? `<div style="white-space: pre-wrap; font-family: monospace; padding: 10px;">${fullMsg.text}</div>`) : 'رسالة فارغة';
+                        iframe.srcdoc = contentHtml;
+
+                        const drawer = document.getElementById('attachmentsDrawer'); 
+                        const wrapper = document.getElementById('attachmentsWrapper'); 
+                        wrapper.innerHTML = '';
+                        
+                        if (fullMsg.attachments && fullMsg.attachments.length > 0) {
+                            drawer.classList.remove('hidden'); drawer.classList.add('flex');
+                            for (const att of fullMsg.attachments) {
+                                const btn = document.createElement('button');
+                                btn.className = 'bg-brand-card hover:bg-brand-primary text-slate-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wide border border-brand-border transition-all flex items-center gap-1.5';
+                                btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg><span class="truncate max-w-[120px]">${att.filename}</span>`;
+                                btn.onclick = () => this.downloadAttachment(fullMsg.id, att.id, att.filename); wrapper.appendChild(btn);
+                            }
+                        } else { drawer.classList.add('hidden'); drawer.classList.remove('flex'); }
+                    } else {
+                        iframe.srcdoc = '<div style="padding: 20px; color: red;">فشل تحميل محتوى الرسالة.</div>';
                     }
-                } else { drawer.classList.add('hidden'); drawer.classList.remove('flex'); }
-
-                document.getElementById('readingPaneModal').classList.remove('hidden'); document.getElementById('readingPaneModal').classList.add('flex');
+                } catch (e) {
+                    iframe.srcdoc = '<div style="padding: 20px; color: red;">حدث خطأ في الاتصال.</div>';
+                }
             }
 
             closeReadingPane() {
@@ -608,27 +647,23 @@
 
             async downloadAttachment(msgId, attId, filename) {
                 try {
-                    const res = await fetch(`${this.apiBase}/messages/${msgId}/attachments/${attId}?_cb=${Date.now()}`, { headers: { 'Authorization': `Bearer ${this.token}`, 'Accept': '*/*' } });
+                    const res = await fetch(`${this.apiBase}/messages/${msgId}/attachments/${attId}?_t=${Date.now()}`, { headers: { 'Authorization': `Bearer ${this.token}`, 'Accept': '*/*' } });
                     const blob = await res.blob(); const url = window.URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename;
                     document.body.appendChild(a); a.click(); a.remove(); window.URL.revokeObjectURL(url);
                 } catch (e) { this.showToast(this.translations[this.currentLang].toastErr, 'error'); }
             }
 
-            // [الحل الجذري لصفحات AdSense]: نوافذ منبثقة تحمل نصوصاً قانونية كاملة
             openLegalModal(type) {
                 const titleEl = document.getElementById('legalModalTitle');
                 const bodyEl = document.getElementById('legalModalBody');
                 const t = this.translations[this.currentLang];
 
                 if (type === 'privacy') {
-                    titleEl.innerText = t.legalPrivacyTitle;
-                    bodyEl.innerHTML = t.legalPrivacyBody;
+                    titleEl.innerText = t.legalPrivacyTitle; bodyEl.innerHTML = t.legalPrivacyBody;
                 } else if (type === 'terms') {
-                    titleEl.innerText = t.legalTermsTitle;
-                    bodyEl.innerHTML = t.legalTermsBody;
+                    titleEl.innerText = t.legalTermsTitle; bodyEl.innerHTML = t.legalTermsBody;
                 } else if (type === 'api') {
-                    titleEl.innerText = t.legalApiTitle;
-                    bodyEl.innerHTML = t.legalApiBody;
+                    titleEl.innerText = t.legalApiTitle; bodyEl.innerHTML = t.legalApiBody;
                 }
 
                 document.getElementById('legalModalWrapper').classList.remove('hidden');
@@ -692,9 +727,12 @@
                     await fetch('/api/send-message', {
                         method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                         body: JSON.stringify({
-                            chat_id: chatId, message_id: fullMsg.id, subject: fullMsg.subject,
-                            from_name: fullMsg.from.name, from_address: fullMsg.from.address,
-                            text_preview: fullMsg.intro || fullMsg.text || 'No preview available'
+                            chat_id: chatId, 
+                            message_id: fullMsg.id, 
+                            subject: fullMsg.subject,
+                            from_name: fullMsg.from?.name || '', 
+                            from_address: fullMsg.from?.address || '',
+                            text_preview: fullMsg.intro || 'بدون محتوى نصي'
                         })
                     });
                 } catch (e) {}
