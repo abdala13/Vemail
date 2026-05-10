@@ -20,6 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- تهيئة وإعداد Tailwind -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -46,6 +47,25 @@
         };
     </script>
 
+    <!-- سكريبت فوري لمنع وميض التصميم وحفظ الوضع واللغة قبل التحميل -->
+    <script>
+        (function() {
+            try {
+                var isDark = localStorage.getItem('vemail_dark') !== '0';
+                var lang = localStorage.getItem('vemail_lang') || 'ar';
+                
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+                
+                document.documentElement.setAttribute('lang', lang);
+                document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            } catch(e) {}
+        })();
+    </script>
+
     <style>
         body { font-family: 'Cairo', sans-serif; }
         .glass-panel {
@@ -69,17 +89,17 @@
 
 <body class="bg-brand-bg text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
     
-    <!-- نظام التنبيهات -->
+    <!-- حاوية التنبيهات -->
     <div id="toast-container" class="fixed top-5 left-5 right-5 md:left-auto md:right-5 flex flex-col gap-3 max-w-sm pointer-events-none transition-all"></div>
 
     <!-- الهيدر -->
     <header class="border-b border-brand-border bg-brand-bg/80 sticky top-0 z-50 backdrop-blur-md">
         <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <button onclick="app.toggleLanguage()" class="px-3 py-1.5 rounded-lg bg-brand-cardAlt border border-brand-border hover:border-brand-primary transition-all text-sm font-bold tracking-wide flex items-center gap-1">
+                <button id="btnToggleLang" class="px-3 py-1.5 rounded-lg bg-brand-cardAlt border border-brand-border hover:border-brand-primary transition-all text-sm font-bold tracking-wide flex items-center gap-1">
                     <span id="langText">EN</span>
                 </button>
-                <button onclick="app.toggleTheme()" class="p-2.5 rounded-lg bg-brand-cardAlt border border-brand-border hover:border-brand-primary transition-all text-yellow-400 hover:text-yellow-300" aria-label="Toggle Theme">
+                <button id="btnToggleTheme" class="p-2.5 rounded-lg bg-brand-cardAlt border border-brand-border hover:border-brand-primary transition-all text-yellow-400 hover:text-yellow-300" aria-label="Toggle Theme">
                     <svg id="themeIconDark" class="w-5 h-5 block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 1.39a1 1 0 011.415 0l.708.707a1 1 0 01-1.414 1.415l-.707-.708a1 1 0 010-1.414zm3.38 4.61a1 1 0 01.5 1 1 1 0 01-1 .5h-1a1 1 0 110-2h1a1 1 0 01.5.5zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-5.63-1.39a1 1 0 010 1.415l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.415 0zM3 10a1 1 0 01-.5-1 1 1 0 011-.5h1a1 1 0 110 2H3.5a1 1 0 01-.5-.5zm1.39-4.61a1 1 0 010-1.415l.708-.707a1 1 0 011.414 1.415l-.708.708a1 1 0 01-1.414 0zM10 6a4 4 0 100 8 4 4 0 000-8z"/></svg>
                     <svg id="themeIconLight" class="w-5 h-5 hidden text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
                 </button>
@@ -100,12 +120,12 @@
     <!-- المحتوى الرئيسي -->
     <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-8 flex flex-col gap-8">
 
-        <!-- مساحة إعلانية AdSense -->
+        <!-- إعلان علوي -->
         <section class="ads-container w-full rounded-2xl border border-dashed border-brand-border bg-brand-card/30 flex items-center justify-center p-4">
             <span class="text-xs text-slate-500 tracking-widest font-mono" id="lblAdHeader">ADSENSE HEADER - إعلان علوي</span>
         </section>
 
-        <!-- صندوق الحساب الرئيسي -->
+        <!-- صندوق البريد الرئيسي -->
         <section class="glass-panel rounded-3xl p-6 md:p-10 text-center flex flex-col items-center gap-6 shadow-2xl relative overflow-hidden">
             <div class="absolute -top-24 -left-24 w-48 h-48 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none"></div>
             
@@ -123,26 +143,26 @@
                     </div>
                 </div>
 
-                <button onclick="app.copyEmail()" class="w-full bg-brand-primary hover:bg-brand-primaryHover active:scale-[0.99] transition-all duration-200 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-brand-primary/30 flex items-center justify-center gap-2 text-lg group">
+                <button id="btnCopyEmail" class="w-full bg-brand-primary hover:bg-brand-primaryHover active:scale-[0.99] transition-all duration-200 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-brand-primary/30 flex items-center justify-center gap-2 text-lg group">
                     <span id="lblCopyBtn">نسخ</span>
                     <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                 </button>
             </div>
 
             <div class="flex items-center justify-center gap-6 pt-2 text-sm font-semibold text-slate-400 w-full">
-                <button onclick="app.checkInboxForce()" class="flex items-center gap-2 hover:text-white transition-colors group">
+                <button id="btnManualRefresh" class="flex items-center gap-2 hover:text-white transition-colors group">
                     <svg class="w-4 h-4 group-active:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                     <span id="lblForceRefresh">تحديث يدوي</span>
                 </button>
                 <div class="w-px h-4 bg-brand-border"></div>
-                <button onclick="app.forceRegenerateAccount()" class="flex items-center gap-2 hover:text-white transition-colors group">
+                <button id="btnChangeAddress" class="flex items-center gap-2 hover:text-white transition-colors group">
                     <svg class="w-4 h-4 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                     <span id="lblChangeAddr">تغيير العنوان</span>
                 </button>
             </div>
         </section>
 
-        <!-- قسم ربط تيليجرام -->
+        <!-- قسم تيليجرام -->
         <section class="glass-panel rounded-3xl p-6 border-l-4 border-l-brand-telegram relative overflow-hidden transition-all">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-start gap-4">
@@ -159,10 +179,10 @@
                 </div>
 
                 <div class="w-full md:w-auto flex flex-col gap-2">
-                    <button id="btnTgConnect" onclick="app.initiateTelegramSetup()" class="w-full md:w-auto bg-brand-telegram hover:bg-brand-telegram/90 active:scale-[0.98] transition-all text-white font-bold px-5 py-3 rounded-xl shadow-md text-sm flex items-center justify-center gap-2 whitespace-nowrap">
+                    <button id="btnTgConnect" class="w-full md:w-auto bg-brand-telegram hover:bg-brand-telegram/90 active:scale-[0.98] transition-all text-white font-bold px-5 py-3 rounded-xl shadow-md text-sm flex items-center justify-center gap-2 whitespace-nowrap">
                         <span id="lblTgBtn">🚀 تفعيل بوت تيليجرام</span>
                     </button>
-                    <button id="btnTgDisconnect" onclick="app.disconnectTelegram()" class="hidden w-full md:w-auto bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-400 px-4 py-2 rounded-xl text-xs font-bold transition-all items-center justify-center gap-1">
+                    <button id="btnTgDisconnect" class="hidden w-full md:w-auto bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-400 px-4 py-2 rounded-xl text-xs font-bold transition-all items-center justify-center gap-1">
                         <span id="lblTgDisconnect">إلغاء الارتباط</span>
                     </button>
                 </div>
@@ -193,7 +213,7 @@
                     <label class="block text-xs font-bold text-slate-400" id="lblManualIdFallback">لم يتم الربط تلقائياً؟ أدخل معرّف المحادثة (Chat ID) المرسل من البوت:</label>
                     <div class="flex gap-2">
                         <input id="txtManualChatId" type="text" placeholder="مثال: 123456789" class="flex-grow bg-brand-input border border-brand-border rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-brand-primary text-center" dir="ltr">
-                        <button onclick="app.bindManualChatId()" class="bg-brand-card hover:bg-brand-primary border border-brand-border hover:border-brand-primary text-white text-xs font-bold px-4 py-2 rounded-lg transition-all whitespace-nowrap">
+                        <button id="btnSaveManualId" class="bg-brand-card hover:bg-brand-primary border border-brand-border hover:border-brand-primary text-white text-xs font-bold px-4 py-2 rounded-lg transition-all whitespace-nowrap">
                             <span id="lblSaveId">حفظ المعرف</span>
                         </button>
                     </div>
@@ -201,12 +221,12 @@
             </div>
         </section>
 
-        <!-- مساحة إعلانية AdSense -->
+        <!-- إعلان وسط -->
         <section class="ads-container w-full rounded-2xl border border-dashed border-brand-border bg-brand-card/30 flex items-center justify-center p-4">
             <span class="text-xs text-slate-500 tracking-widest font-mono" id="lblAdFeed">ADSENSE FEED - إعلان وسط الصندوق</span>
         </section>
 
-        <!-- صندوق الوارد المباشر -->
+        <!-- صندوق الوارد -->
         <section class="glass-panel rounded-3xl p-6 flex flex-col gap-6 shadow-xl">
             <div class="flex items-center justify-between border-b border-brand-border pb-4">
                 <div class="flex items-center gap-3">
@@ -241,7 +261,7 @@
                         <span id="readFrom">من: account@domain.com</span>
                     </div>
                 </div>
-                <button onclick="app.closeReadingPane()" class="p-2 rounded-xl bg-brand-input hover:bg-brand-primary/20 text-slate-400 hover:text-white transition-all flex-shrink-0">
+                <button id="btnCloseReadingModal" class="p-2 rounded-xl bg-brand-input hover:bg-brand-primary/20 text-slate-400 hover:text-white transition-all flex-shrink-0">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
@@ -257,489 +277,651 @@
         </div>
     </div>
 
-    <!-- نوافذ الصفحات القانونية المتوافقة 100% مع Google AdSense -->
+    <!-- نوافذ الصفحات القانونية -->
     <div id="legalModalWrapper" class="fixed inset-0 z-[99999] bg-brand-bg/90 backdrop-blur-md hidden items-center justify-center p-4 transition-all animate-fade-in">
         <div class="bg-brand-card border border-brand-border w-full max-w-2xl rounded-3xl overflow-hidden flex flex-col shadow-2xl max-h-[85vh]">
             <div class="bg-brand-cardAlt p-5 border-b border-brand-border flex items-center justify-between">
                 <h3 id="legalModalTitle" class="font-bold text-base md:text-lg text-brand-primary">سياسة الخصوصية</h3>
-                <button onclick="app.closeLegalModal()" class="p-2 rounded-xl bg-brand-input hover:bg-brand-primary/20 text-slate-400 hover:text-white transition-all">
+                <button id="btnCloseLegalModal" class="p-2 rounded-xl bg-brand-input hover:bg-brand-primary/20 text-slate-400 hover:text-white transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
             <div id="legalModalBody" class="p-6 flex-grow overflow-y-auto text-sm md:text-base leading-relaxed space-y-4 text-slate-300">
-                <!-- المحتوى يحقن برمجياً بأمان -->
             </div>
         </div>
     </div>
 
-    <!-- الفوتر المطور والمعدل بالحقوق المطلوبة -->
+    <!-- الفوتر مع الحقوق الثابتة -->
     <footer class="border-t border-brand-border bg-brand-bg py-8 mt-12">
         <div class="max-w-6xl mx-auto px-4 text-center space-y-4">
             <div class="flex items-center justify-center gap-6 text-xs text-slate-400 font-semibold">
-                <button onclick="app.openLegalModal('privacy')" class="hover:text-brand-primary transition-colors" id="ftPrivacy">سياسة الخصوصية</button>
+                <button id="btnOpenPrivacy" class="hover:text-brand-primary transition-colors">سياسة الخصوصية</button>
                 <span>•</span>
-                <button onclick="app.openLegalModal('terms')" class="hover:text-brand-primary transition-colors" id="ftTerms">شروط الاستخدام</button>
+                <button id="btnOpenTerms" class="hover:text-brand-primary transition-colors">شروط الاستخدام</button>
                 <span>•</span>
-                <button onclick="app.openLegalModal('api')" class="hover:text-brand-primary transition-colors" id="ftApi">واجهة المطورين API</button>
+                <button id="btnOpenApi" class="hover:text-brand-primary transition-colors">واجهة المطورين API</button>
             </div>
-            <!-- الحقوق المحفوظة بالكامل كما طلبت -->
             <p class="text-xs text-slate-500 font-mono tracking-wide" dir="ltr">
                 تم التطوير <span class="text-brand-primary font-bold">Abdala hanouna</span> لسنة 2026
             </p>
         </div>
     </footer>
 
-    <!-- الهيكل البرمجي المطور بالكامل -->
+    <!-- سكريبت الفانيلا جافاسكريبت النظيف والمعاد بناؤه بالكامل -->
     <script>
-        class VeMailApp {
-            constructor() {
-                this.apiBase = 'https://api.mail.tm';
-                this.account = null;
-                this.token = null;
-                this.messages = new Map();
-                this.processedMessageIds = [];
-                
-                this.pollInterval = null;
-                this.tgCheckInterval = null;
-                
-                this.currentLang = 'ar';
-                this.isDark = true;
-                
-                this.translations = {
-                    ar: {
-                        langText: 'EN', lblAdHeader: 'ADSENSE HEADER - إعلان علوي', lblMainTitle: 'بريدك المؤقت جاهز',
-                        lblMainSub: 'احصل على رسائل التفعيل فوراً وبشكل مجهول تماماً.', lblCreating: 'تهيئة الحساب...',
-                        lblCopyBtn: 'نسخ', lblForceRefresh: 'تحديث يدوي', lblChangeAddr: 'تغيير العنوان',
-                        lblTgTitle: 'ربط مع تيليجرام (اختياري)', lblTgDesc: 'استقبل رسائل التفعيل الجديدة مباشرة على حسابك في تيليجرام بدون الحاجة لإبقاء الموقع مفتوحاً.',
-                        lblTgBtn: '🚀 تفعيل بوت تيليجرام', lblTgDisconnect: 'إلغاء الارتباط', lblStep1: '1. اضغط على الزر لفتح البوت وتفعيل الكود الخاص بك:',
-                        lblWaitingTg: 'ننتظر الاتصال...', lblLaunchApp: 'فتح تطبيق تيليجرام', lblManualIdFallback: 'لم يتم الربط تلقائياً؟ أدخل معرّف المحادثة (Chat ID) المرسل من البوت:',
-                        lblSaveId: 'حفظ المعرف', lblAdFeed: 'ADSENSE FEED - إعلان وسط الصندوق', lblInboxTitle: 'صندوق الوارد المباشر',
-                        lblAutoCheckText: 'تحديث تلقائي مستمر', lblEmptyState: 'الصندوق فارغ حالياً. بانتظار وصول الرسائل...',
-                        lblAttachments: 'المرفقات:', toastCopied: 'تم نسخ البريد بنجاح!', toastLinked: 'تم ربط تيليجرام بنجاح!',
-                        toastUnlinked: 'تم إلغاء ربط تيليجرام', toastNewMsg: 'رسالة جديدة واردة!', toastErr: 'حدث خطأ، يرجى المحاولة مجدداً',
-                        ftPrivacy: 'سياسة الخصوصية', ftTerms: 'شروط الاستخدام', ftApi: 'واجهة المطورين API',
-                        
-                        legalPrivacyTitle: 'سياسة الخصوصية (Privacy Policy)',
-                        legalPrivacyBody: '<p>نحن في <b>VeMail</b> نلتزم بحماية خصوصية مستخدمينا بالكامل. تعمل منصتنا وفق مبدأ عدم التخزين الدائم (Zero Permanent Storage).</p><p><b>1. البيانات المجمعة:</b> يتم تخزين بيانات البريد المؤقت (البريد، والرمز السري) محلياً فقط داخل المتصفح (localStorage) لضمان استمرار الجلسة. لا نملك أي قواعد بيانات لتتبع رسائلك.</p><p><b>2. ملفات تعريف الارتباط (Cookies):</b> نستخدم ملفات تعريف الارتباط الضرورية لعمل الموقع، بالإضافة إلى ملفات تعريف ارتباط Google AdSense لعرض الإعلانات الآمنة.</p><p><b>3. الربط مع تيليجرام:</b> عند تفعيل البوت، يتم ربط معرف المحادثة (Chat ID) مؤقتاً لتحويل الرسائل لحظياً دون حفظها بقواعد بياناتنا.</p>',
-                        legalTermsTitle: 'شروط الاستخدام (Terms of Use)',
-                        legalTermsBody: '<p>باستخدامك لمنصة <b>VeMail</b>، فإنك توافق على الشروط التالية:</p><p><b>1. طبيعة الخدمة:</b> يتم تقديم خدمة البريد المؤقت "كما هي" لاستقبال رسائل التفعيل العادية، ولا نضمن استمرار العناوين للأبد.</p><p><b>2. الاستخدام المقبول:</b> يُمنع منعاً باتاً استخدام البريد المؤقت في أي أنشطة غير قانونية، أو احتيالية، أو لإرسال/استقبال البريد العشوائي (Spam).</p><p><b>3. إخلاء المسؤولية:</b> المنصة غير مسؤولة عن فقدان أي رسالة أو بريد نتيجة لحذف بيانات المتصفح أو انتهاء صلاحية النطاقات من المصدر.</p>',
-                        legalApiTitle: 'واجهة المطورين (API Documentation)',
-                        legalApiBody: '<p>تعتمد منصتنا في بنيتها الأساسية على واجهة <b>Mail.tm API</b> العامة المفتوحة.</p><p>يمكن للمطورين الاستفادة من الخدمة لإنشاء بريد مؤقت خاص بهم باستخدام نقاط الاتصال (Endpoints) القياسية التالية:</p><pre dir="ltr" class="bg-brand-input p-3 rounded-lg text-xs font-mono text-brand-telegram">GET https://api.mail.tm/domains\nPOST https://api.mail.tm/accounts\nGET https://api.mail.tm/messages</pre><p>جميع الطلبات تتطلب المصادقة عبر ترويسة <code>Authorization: Bearer TOKEN</code>.</p>'
-                    },
-                    en: {
-                        langText: 'AR', lblAdHeader: 'ADSENSE HEADER - TOP AD', lblMainTitle: 'Your Temp Mail is Ready',
-                        lblMainSub: 'Receive verification codes instantly and entirely anonymously.', lblCreating: 'Initializing account...',
-                        lblCopyBtn: 'Copy', lblForceRefresh: 'Manual Refresh', lblChangeAddr: 'Change Address',
-                        lblTgTitle: 'Connect Telegram (Optional)', lblTgDesc: 'Receive incoming verification emails directly via your Telegram account instantly.',
-                        lblTgBtn: '🚀 Activate Telegram Bot', lblTgDisconnect: 'Disconnect', lblStep1: '1. Click below to launch the bot and trigger your code:',
-                        lblWaitingTg: 'Awaiting connection...', lblLaunchApp: 'Open Telegram App', lblManualIdFallback: 'Did not auto-link? Enter the Chat ID sent by the bot:',
-                        lblSaveId: 'Save ID', lblAdFeed: 'ADSENSE FEED - CENTER AD', lblInboxTitle: 'Realtime Inbox',
-                        lblAutoCheckText: 'Continual auto-refresh', lblEmptyState: 'Inbox is currently empty. Awaiting incoming messages...',
-                        lblAttachments: 'Attachments:', toastCopied: 'Email copied successfully!', toastLinked: 'Telegram successfully linked!',
-                        toastUnlinked: 'Telegram link removed', toastNewMsg: 'New incoming message!', toastErr: 'An error occurred, please retry',
-                        ftPrivacy: 'Privacy Policy', ftTerms: 'Terms of Use', ftApi: 'API Documentation',
-                        
-                        legalPrivacyTitle: 'Privacy Policy',
-                        legalPrivacyBody: '<p>At <b>VeMail</b>, we strictly respect your privacy. Our platform operates on a zero-permanent storage architecture.</p><p><b>1. Collected Data:</b> Account handles and credentials are saved strictly in your local browser storage (localStorage) to retain active sessions. We do not maintain server-side logs or databases.</p><p><b>2. Cookies:</b> We use standard essential cookies along with third-party Google AdSense cookies to display relevant safety-compliant ads.</p><p><b>3. Telegram Push:</b> Linking your Telegram triggers instant forwarding over secure Edge API bridges without archiving messages internally.</p>',
-                        legalTermsTitle: 'Terms of Use',
-                        legalTermsBody: '<p>By utilizing <b>VeMail</b>, you agree strictly to the following parameters:</p><p><b>1. Acceptable Use:</b> The temporary inbox is provided as-is for routine verification tasks. Engaging in illicit activities, fraud, or abuse is strictly prohibited.</p><p><b>2. Liability:</b> We hold no liability for lost data, expired domains, or cleared browser local storage resulting in address forfeiture.</p>',
-                        legalApiTitle: 'API Documentation',
-                        legalApiBody: '<p>VeMail leverages the powerful public <b>Mail.tm API</b> infrastructure.</p><p>Developers can interface directly via standard endpoints:</p><pre dir="ltr" class="bg-brand-input p-3 rounded-lg text-xs font-mono text-brand-telegram">GET https://api.mail.tm/domains\nPOST https://api.mail.tm/accounts</pre><p>Authenticate standard headers using <code>Authorization: Bearer TOKEN</code>.</p>'
-                    }
-                };
-
-                this.loadPreferences();
-                this.bootAccountEngine();
-            }
-
-            showToast(message, type = 'success') {
-                const container = document.getElementById('toast-container');
-                const toast = document.createElement('div');
-                const bgColors = type === 'success' ? 'bg-[#161d33] border-emerald-500/40 text-emerald-400' : 'bg-[#161d33] border-rose-500/40 text-rose-400';
-                toast.className = `flex items-center gap-3 px-4 py-3 rounded-2xl border ${bgColors} shadow-xl backdrop-blur-lg transform transition-all translate-y-[-10px] opacity-0 text-xs md:text-sm font-bold font-mono`;
-                toast.innerHTML = `<div class="w-2 h-2 rounded-full ${type === 'success' ? 'bg-emerald-500' : 'bg-rose-500'} animate-ping"></div><span>${message}</span>`;
-                container.appendChild(toast);
-                setTimeout(() => { toast.classList.remove('translate-y-[-10px]', 'opacity-0'); toast.classList.add('translate-y-0', 'opacity-100'); }, 10);
-                setTimeout(() => { toast.classList.add('opacity-0', 'scale-95'); setTimeout(() => toast.remove(), 300); }, 3500);
-            }
-
-            toggleLanguage() {
-                this.currentLang = this.currentLang === 'ar' ? 'en' : 'ar';
-                localStorage.setItem('vemail_lang', this.currentLang);
-                this.applyLanguageUI();
-            }
-
-            applyLanguageUI() {
-                const isAr = this.currentLang === 'ar';
-                document.documentElement.setAttribute('lang', this.currentLang);
-                document.documentElement.setAttribute('dir', isAr ? 'rtl' : 'ltr');
-                const t = this.translations[this.currentLang];
-                for (const key in t) { 
-                    const el = document.getElementById(key); 
-                    if (el && !key.startsWith('legal')) el.innerText = t[key]; 
-                }
-            }
-
-            toggleTheme() {
-                this.isDark = !this.isDark;
-                localStorage.setItem('vemail_dark', this.isDark ? '1' : '0');
-                this.applyThemeUI();
-            }
-
-            applyThemeUI() {
-                const darkIcon = document.getElementById('themeIconDark');
-                const lightIcon = document.getElementById('themeIconLight');
-                if (this.isDark) {
-                    document.documentElement.classList.add('dark'); darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden');
-                } else {
-                    document.documentElement.classList.remove('dark'); darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden');
-                }
-            }
-
-            loadPreferences() {
-                const savedLang = localStorage.getItem('vemail_lang');
-                if (savedLang && (savedLang === 'ar' || savedLang === 'en')) this.currentLang = savedLang;
-                const savedTheme = localStorage.getItem('vemail_dark');
-                if (savedTheme !== null) this.isDark = savedTheme === '1';
-                this.applyLanguageUI(); this.applyThemeUI();
-
-                const tgLinked = localStorage.getItem('telegram_chat_id');
-                if (tgLinked) this.markTelegramAsLinked(tgLinked);
-
-                const storedProcessed = localStorage.getItem('vemail_processed');
-                if (storedProcessed) { try { this.processedMessageIds = JSON.parse(storedProcessed); } catch (e) { this.processedMessageIds = []; } }
-            }
-
-            // الاعتماد اللحظي والموثوق على الجلسة المخزنة لضمان عدم تغير الإيميل
-            async bootAccountEngine() {
-                const session = localStorage.getItem('vemail_account');
-                if (session) {
-                    try {
-                        const parsed = JSON.parse(session);
-                        if (parsed && parsed.token && parsed.address) {
-                            this.account = { id: parsed.id, address: parsed.address, password: parsed.password };
-                            this.token = parsed.token;
-                            this.revealEmailAddress();
-                            this.startInboxMonitoring();
-                            
-                            // فحص صامت في الخلفية للتأكد من استمرار الحساب
-                            fetch(`${this.apiBase}/me`, {
-                                headers: { 'Authorization': `Bearer ${this.token}`, 'Accept': 'application/json' }
-                            }).then(res => {
-                                if (res.status === 401) {
-                                    this.regenerateAccount();
-                                }
-                            }).catch(e => {});
-                            return;
-                        }
-                    } catch (e) {}
-                }
-                await this.regenerateAccount();
-            }
-
-            forceRegenerateAccount() {
-                localStorage.removeItem('vemail_account');
-                this.regenerateAccount();
-            }
-
-            async regenerateAccount() {
-                this.stopInboxMonitoring();
-                document.getElementById('loaderPill').classList.remove('hidden');
-                try {
-                    const domRes = await fetch(`${this.apiBase}/domains`);
-                    const domData = await domRes.json();
-                    const targetDomain = domData['hydra:member'][0].domain;
-
-                    const username = 'vemail_' + Math.random().toString(36).substring(2, 9);
-                    const address = `${username}@${targetDomain}`;
-                    const password = Math.random().toString(36).substring(2, 16);
-
-                    const createRes = await fetch(`${this.apiBase}/accounts`, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ address, password })
-                    });
-                    const accData = await createRes.json();
-
-                    const tokenRes = await fetch(`${this.apiBase}/token`, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ address, password })
-                    });
-                    const tokenData = await tokenRes.json();
-
-                    this.account = { id: accData.id, address, password }; this.token = tokenData.token;
-                    this.messages.clear(); this.processedMessageIds = [];
-                    localStorage.setItem('vemail_processed', JSON.stringify([]));
-                    localStorage.setItem('vemail_account', JSON.stringify({ id: accData.id, address, password, token: tokenData.token }));
-
-                    this.revealEmailAddress(); this.renderInboxUI(); this.startInboxMonitoring();
-                } catch (error) { this.showToast(this.translations[this.currentLang].toastErr, 'error'); }
-            }
-
-            revealEmailAddress() {
-                document.getElementById('loaderPill').classList.add('hidden');
-                document.getElementById('emailAddressBox').value = this.account.address;
-            }
-
-            copyEmail() {
-                if (!this.account) return;
-                navigator.clipboard.writeText(this.account.address).then(() => { this.showToast(this.translations[this.currentLang].toastCopied, 'success'); })
-                .catch(() => {
-                    const box = document.getElementById('emailAddressBox'); box.select(); document.execCommand('copy');
-                    this.showToast(this.translations[this.currentLang].toastCopied, 'success');
-                });
-            }
-
-            startInboxMonitoring() {
-                this.checkInbox();
-                // فحص بمعدل آمن 100% لتجنب الحظر
-                this.pollInterval = setInterval(() => this.checkInbox(), 4500);
-            }
-
-            stopInboxMonitoring() { if (this.pollInterval) clearInterval(this.pollInterval); }
-            checkInboxForce() { this.checkInbox(true); }
-
-            // [الحل الجذري النهائي للرسائل وتيليجرام]: الاعتماد على الـ List Endpoint الخفيفة فقط
-            async checkInbox(force = false) {
-                if (!this.token) return;
-                try {
-                    const res = await fetch(`${this.apiBase}/messages?page=1&_t=${Date.now()}`, {
-                        method: 'GET',
-                        headers: { 
-                            'Authorization': `Bearer ${this.token}`,
-                            'Accept': 'application/json'
-                        }
-                    });
+        document.addEventListener('DOMContentLoaded', function() {
+            class VeMailEngine {
+                constructor() {
+                    this.apiBase = 'https://api.mail.tm';
+                    this.account = null;
+                    this.token = null;
+                    this.messages = new Map();
+                    this.processedMessageIds = [];
+                    this.pollInterval = null;
+                    this.tgCheckInterval = null;
                     
-                    if (res.status === 401) {
-                        this.forceRegenerateAccount();
+                    this.currentLang = localStorage.getItem('vemail_lang') || 'ar';
+                    this.isDark = localStorage.getItem('vemail_dark') !== '0';
+
+                    this.translations = {
+                        ar: {
+                            langText: 'EN', lblAdHeader: 'ADSENSE HEADER - إعلان علوي', lblMainTitle: 'بريدك المؤقت جاهز',
+                            lblMainSub: 'احصل على رسائل التفعيل فوراً وبشكل مجهول تماماً.', lblCreating: 'تهيئة الحساب...',
+                            lblCopyBtn: 'نسخ', lblForceRefresh: 'تحديث يدوي', lblChangeAddr: 'تغيير العنوان',
+                            lblTgTitle: 'ربط مع تيليجرام (اختياري)', lblTgDesc: 'استقبل رسائل التفعيل الجديدة مباشرة على حسابك في تيليجرام بدون الحاجة لإبقاء الموقع مفتوحاً.',
+                            lblTgBtn: '🚀 تفعيل بوت تيليجرام', lblTgDisconnect: 'إلغاء الارتباط', lblStep1: '1. اضغط على الزر لفتح البوت وتفعيل الكود الخاص بك:',
+                            lblWaitingTg: 'ننتظر الاتصال...', lblLaunchApp: 'فتح تطبيق تيليجرام', lblManualIdFallback: 'لم يتم الربط تلقائياً؟ أدخل معرّف المحادثة (Chat ID) المرسل من البوت:',
+                            lblSaveId: 'حفظ المعرف', lblAdFeed: 'ADSENSE FEED - إعلان وسط الصندوق', lblInboxTitle: 'صندوق الوارد المباشر',
+                            lblAutoCheckText: 'تحديث تلقائي مستمر', lblEmptyState: 'الصندوق فارغ حالياً. بانتظار وصول الرسائل...',
+                            lblAttachments: 'المرفقات:', toastCopied: 'تم نسخ البريد بنجاح!', toastLinked: 'تم ربط تيليجرام بنجاح!',
+                            toastUnlinked: 'تم إلغاء ربط تيليجرام', toastNewMsg: 'رسالة جديدة واردة!', toastErr: 'حدث خطأ، يرجى المحاولة مجدداً',
+                            btnOpenPrivacy: 'سياسة الخصوصية', btnOpenTerms: 'شروط الاستخدام', btnOpenApi: 'واجهة المطورين API',
+                            
+                            modalPrivacyTitle: 'سياسة الخصوصية',
+                            modalPrivacyBody: '<p>نحن في <b>VeMail</b> نلتزم بحماية خصوصية مستخدمينا بالكامل. تعمل منصتنا وفق مبدأ عدم التخزين الدائم.</p><p><b>1. البيانات المجمعة:</b> يتم تخزين بيانات البريد المؤقت محلياً فقط داخل المتصفح لضمان استمرار الجلسة. لا نملك أي قواعد بيانات لتتبع رسائلك.</p><p><b>2. ملفات تعريف الارتباط:</b> نستخدم ملفات تعريف الارتباط الضرورية لعمل الموقع، بالإضافة إلى ملفات تعريف ارتباط Google AdSense لعرض الإعلانات الآمنة.</p><p><b>3. الربط مع تيليجرام:</b> عند تفعيل البوت، يتم ربط معرف المحادثة مؤقتاً لتحويل الرسائل لحظياً دون حفظها.</p>',
+                            modalTermsTitle: 'شروط الاستخدام',
+                            modalTermsBody: '<p>باستخدامك لمنصة <b>VeMail</b>، فإنك توافق على الشروط التالية:</p><p><b>1. طبيعة الخدمة:</b> يتم تقديم خدمة البريد المؤقت لاستقبال رسائل التفعيل العادية، ولا نضمن استمرار العناوين للأبد.</p><p><b>2. الاستخدام المقبول:</b> يُمنع منعاً باتاً استخدام البريد المؤقت في أي أنشطة غير قانونية، أو احتيالية، أو لإرسال البريد العشوائي.</p>',
+                            modalApiTitle: 'واجهة المطورين API',
+                            modalApiBody: '<p>تعتمد منصتنا في بنيتها الأساسية على واجهة <b>Mail.tm API</b> العامة المفتوحة.</p><p>يمكن للمطورين الاستفادة من الخدمة لإنشاء بريد مؤقت خاص بهم باستخدام نقاط الاتصال القياسية.</p>'
+                        },
+                        en: {
+                            langText: 'AR', lblAdHeader: 'ADSENSE HEADER - TOP AD', lblMainTitle: 'Your Temp Mail is Ready',
+                            lblMainSub: 'Receive verification codes instantly and entirely anonymously.', lblCreating: 'Initializing account...',
+                            lblCopyBtn: 'Copy', lblForceRefresh: 'Manual Refresh', lblChangeAddr: 'Change Address',
+                            lblTgTitle: 'Connect Telegram (Optional)', lblTgDesc: 'Receive incoming verification emails directly via your Telegram account instantly.',
+                            lblTgBtn: '🚀 Activate Telegram Bot', lblTgDisconnect: 'Disconnect', lblStep1: '1. Click below to launch the bot and trigger your code:',
+                            lblWaitingTg: 'Awaiting connection...', lblLaunchApp: 'Open Telegram App', lblManualIdFallback: 'Did not auto-link? Enter the Chat ID sent by the bot:',
+                            lblSaveId: 'Save ID', lblAdFeed: 'ADSENSE FEED - CENTER AD', lblInboxTitle: 'Realtime Inbox',
+                            lblAutoCheckText: 'Continual auto-refresh', lblEmptyState: 'Inbox is currently empty. Awaiting incoming messages...',
+                            lblAttachments: 'Attachments:', toastCopied: 'Email copied successfully!', toastLinked: 'Telegram successfully linked!',
+                            toastUnlinked: 'Telegram link removed', toastNewMsg: 'New incoming message!', toastErr: 'An error occurred, please retry',
+                            btnOpenPrivacy: 'Privacy Policy', btnOpenTerms: 'Terms of Use', btnOpenApi: 'API Documentation',
+                            
+                            modalPrivacyTitle: 'Privacy Policy',
+                            modalPrivacyBody: '<p>At <b>VeMail</b>, we strictly respect your privacy. Our platform operates on a zero-permanent storage architecture.</p><p><b>1. Collected Data:</b> Credentials are saved strictly in your local browser storage to retain active sessions. We do not maintain server databases.</p><p><b>2. Cookies:</b> We use standard essential cookies along with third-party Google AdSense cookies.</p><p><b>3. Telegram Push:</b> Linking your Telegram triggers instant forwarding over secure Edge bridges.</p>',
+                            modalTermsTitle: 'Terms of Use',
+                            modalTermsBody: '<p>By utilizing <b>VeMail</b>, you agree strictly to the following parameters:</p><p><b>1. Acceptable Use:</b> The inbox is provided for routine verification tasks. Engaging in illicit activities or abuse is strictly prohibited.</p>',
+                            modalApiTitle: 'API Documentation',
+                            modalApiBody: '<p>VeMail leverages the powerful public <b>Mail.tm API</b> infrastructure.</p><p>Developers can interface directly via standard endpoints.</p>'
+                        }
+                    };
+
+                    this.setupEventHandlers();
+                    this.applyLanguage();
+                    this.applyTheme();
+                    this.restoreProcessedData();
+                    this.initAccount();
+                }
+
+                setupEventHandlers() {
+                    var self = this;
+                    
+                    var elLang = document.getElementById('btnToggleLang');
+                    if (elLang) elLang.onclick = function() { self.toggleLanguage(); };
+
+                    var elTheme = document.getElementById('btnToggleTheme');
+                    if (elTheme) elTheme.onclick = function() { self.toggleTheme(); };
+
+                    var elCopy = document.getElementById('btnCopyEmail');
+                    if (elCopy) elCopy.onclick = function() { self.copyEmailAddress(); };
+
+                    var elRefresh = document.getElementById('btnManualRefresh');
+                    if (elRefresh) elRefresh.onclick = function() { self.fetchMessages(true); };
+
+                    var elChange = document.getElementById('btnChangeAddress');
+                    if (elChange) elChange.onclick = function() { self.forceGenerateNewAccount(); };
+
+                    var elTgConn = document.getElementById('btnTgConnect');
+                    if (elTgConn) elTgConn.onclick = function() { self.startTelegramSetup(); };
+
+                    var elTgDisconn = document.getElementById('btnTgDisconnect');
+                    if (elTgDisconn) elTgDisconn.onclick = function() { self.disconnectTelegram(); };
+
+                    var elSaveId = document.getElementById('btnSaveManualId');
+                    if (elSaveId) elSaveId.onclick = function() { self.saveManualTelegramId(); };
+
+                    var elCloseRead = document.getElementById('btnCloseReadingModal');
+                    if (elCloseRead) elCloseRead.onclick = function() { self.closeReadingModal(); };
+
+                    var elCloseLegal = document.getElementById('btnCloseLegalModal');
+                    if (elCloseLegal) elCloseLegal.onclick = function() { self.closeLegalModal(); };
+
+                    var elPriv = document.getElementById('btnOpenPrivacy');
+                    if (elPriv) elPriv.onclick = function() { self.openLegalModal('privacy'); };
+
+                    var elTerms = document.getElementById('btnOpenTerms');
+                    if (elTerms) elTerms.onclick = function() { self.openLegalModal('terms'); };
+
+                    var elApi = document.getElementById('btnOpenApi');
+                    if (elApi) elApi.onclick = function() { self.openLegalModal('api'); };
+                }
+
+                showToastMessage(msg, type) {
+                    type = type || 'success';
+                    var container = document.getElementById('toast-container');
+                    if (!container) return;
+                    
+                    var toast = document.createElement('div');
+                    var bg = type === 'success' ? 'border-emerald-500/40 text-emerald-400' : 'border-rose-500/40 text-rose-400';
+                    toast.className = 'flex items-center gap-3 px-4 py-3 rounded-2xl border bg-[#161d33] shadow-xl backdrop-blur-lg transform transition-all translate-y-[-10px] opacity-0 text-xs md:text-sm font-bold font-mono';
+                    toast.innerHTML = '<div class="w-2 h-2 rounded-full ' + (type === 'success' ? 'bg-emerald-500' : 'bg-rose-500') + ' animate-ping"></div><span>' + msg + '</span>';
+                    
+                    container.appendChild(toast);
+                    setTimeout(function() {
+                        toast.classList.remove('translate-y-[-10px]', 'opacity-0');
+                        toast.classList.add('translate-y-0', 'opacity-100');
+                    }, 10);
+                    
+                    setTimeout(function() {
+                        toast.classList.add('opacity-0', 'scale-95');
+                        setTimeout(function() { toast.remove(); }, 300);
+                    }, 3500);
+                }
+
+                toggleLanguage() {
+                    this.currentLang = this.currentLang === 'ar' ? 'en' : 'ar';
+                    localStorage.setItem('vemail_lang', this.currentLang);
+                    this.applyLanguage();
+                }
+
+                applyLanguage() {
+                    document.documentElement.setAttribute('lang', this.currentLang);
+                    document.documentElement.setAttribute('dir', this.currentLang === 'ar' ? 'rtl' : 'ltr');
+                    
+                    var dict = this.translations[this.currentLang];
+                    for (var key in dict) {
+                        if (!key.startsWith('modal')) {
+                            var el = document.getElementById(key);
+                            if (el) el.innerText = dict[key];
+                        }
+                    }
+                }
+
+                toggleTheme() {
+                    this.isDark = !this.isDark;
+                    localStorage.setItem('vemail_dark', this.isDark ? '1' : '0');
+                    this.applyTheme();
+                }
+
+                applyTheme() {
+                    var darkIcon = document.getElementById('themeIconDark');
+                    var lightIcon = document.getElementById('themeIconLight');
+                    
+                    if (this.isDark) {
+                        document.documentElement.classList.add('dark');
+                        if (darkIcon) darkIcon.classList.remove('hidden');
+                        if (lightIcon) lightIcon.classList.add('hidden');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        if (darkIcon) darkIcon.classList.add('hidden');
+                        if (lightIcon) lightIcon.classList.remove('hidden');
+                    }
+                }
+
+                restoreProcessedData() {
+                    var tgLinked = localStorage.getItem('telegram_chat_id');
+                    if (tgLinked) this.setTelegramLinkedState(tgLinked);
+
+                    var stored = localStorage.getItem('vemail_processed');
+                    if (stored) {
+                        try { this.processedMessageIds = JSON.parse(stored); } catch(e) { this.processedMessageIds = []; }
+                    }
+                }
+
+                initAccount() {
+                    var session = localStorage.getItem('vemail_account');
+                    if (session) {
+                        try {
+                            var data = JSON.parse(session);
+                            if (data && data.token && data.address) {
+                                this.account = { id: data.id, address: data.address, password: data.password };
+                                this.token = data.token;
+                                this.displayEmailAddress();
+                                this.startPolling();
+                                return;
+                            }
+                        } catch(e) {}
+                    }
+                    this.generateNewAccount();
+                }
+
+                forceGenerateNewAccount() {
+                    localStorage.removeItem('vemail_account');
+                    this.generateNewAccount();
+                }
+
+                generateNewAccount() {
+                    var self = this;
+                    this.stopPolling();
+                    
+                    var pill = document.getElementById('loaderPill');
+                    if (pill) pill.classList.remove('hidden');
+
+                    fetch(this.apiBase + '/domains')
+                        .then(function(res) { return res.json(); })
+                        .then(function(domData) {
+                            var domain = domData['hydra:member'][0].domain;
+                            var user = 'vemail_' + Math.random().toString(36).substring(2, 9);
+                            var address = user + '@' + domain;
+                            var password = Math.random().toString(36).substring(2, 16);
+
+                            fetch(self.apiBase + '/accounts', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                                body: JSON.stringify({ address: address, password: password })
+                            })
+                            .then(function(accRes) { return accRes.json(); })
+                            .then(function(accData) {
+                                fetch(self.apiBase + '/token', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                                    body: JSON.stringify({ address: address, password: password })
+                                })
+                                .then(function(tokRes) { return tokRes.json(); })
+                                .then(function(tokData) {
+                                    self.account = { id: accData.id, address: address, password: password };
+                                    self.token = tokData.token;
+                                    self.messages.clear();
+                                    self.processedMessageIds = [];
+                                    
+                                    localStorage.setItem('vemail_processed', JSON.stringify([]));
+                                    localStorage.setItem('vemail_account', JSON.stringify({
+                                        id: accData.id, address: address, password: password, token: tokData.token
+                                    }));
+
+                                    self.displayEmailAddress();
+                                    self.renderInbox();
+                                    self.startPolling();
+                                });
+                            });
+                        })
+                        .catch(function() {
+                            self.showToastMessage(self.translations[self.currentLang].toastErr, 'error');
+                        });
+                }
+
+                displayEmailAddress() {
+                    var pill = document.getElementById('loaderPill');
+                    if (pill) pill.classList.add('hidden');
+                    
+                    var box = document.getElementById('emailAddressBox');
+                    if (box && this.account) box.value = this.account.address;
+                }
+
+                copyEmailAddress() {
+                    if (!this.account) return;
+                    var self = this;
+                    var addr = this.account.address;
+                    
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(addr).then(function() {
+                            self.showToastMessage(self.translations[self.currentLang].toastCopied, 'success');
+                        });
+                    } else {
+                        var box = document.getElementById('emailAddressBox');
+                        if (box) {
+                            box.select();
+                            document.execCommand('copy');
+                            self.showToastMessage(self.translations[self.currentLang].toastCopied, 'success');
+                        }
+                    }
+                }
+
+                startPolling() {
+                    var self = this;
+                    this.fetchMessages();
+                    this.pollInterval = setInterval(function() { self.fetchMessages(); }, 4000);
+                }
+
+                stopPolling() {
+                    if (this.pollInterval) clearInterval(this.pollInterval);
+                }
+
+                fetchMessages(isManual) {
+                    if (!this.token) return;
+                    var self = this;
+
+                    fetch(this.apiBase + '/messages?page=1&_cb=' + Date.now(), {
+                        headers: { 'Authorization': 'Bearer ' + this.token, 'Accept': 'application/json' }
+                    })
+                    .then(function(res) {
+                        if (res.status === 401) {
+                            self.forceGenerateNewAccount();
+                            throw new Error('Expired');
+                        }
+                        return res.json();
+                    })
+                    .then(function(data) {
+                        var list = data['hydra:member'] || [];
+                        var hasNew = false;
+                        
+                        var counter = document.getElementById('msgCounter');
+                        if (counter) counter.innerText = list.length;
+
+                        var chatId = localStorage.getItem('telegram_chat_id');
+
+                        for (var i = 0; i < list.length; i++) {
+                            var item = list[i];
+                            if (!self.messages.has(item.id)) {
+                                self.messages.set(item.id, item);
+                                hasNew = true;
+
+                                if (chatId && self.processedMessageIds.indexOf(item.id) === -1) {
+                                    self.processedMessageIds.push(item.id);
+                                    localStorage.setItem('vemail_processed', JSON.stringify(self.processedMessageIds));
+                                    self.sendToTelegram(chatId, item);
+                                }
+                            }
+                        }
+
+                        if (hasNew || isManual) {
+                            self.renderInbox();
+                            if (hasNew && !isManual) {
+                                self.showToastMessage(self.translations[self.currentLang].toastNewMsg, 'success');
+                            }
+                        }
+
+                        var emptyState = document.getElementById('emptyInboxState');
+                        if (emptyState) {
+                            if (self.messages.size > 0) emptyState.classList.add('hidden');
+                            else emptyState.classList.remove('hidden');
+                        }
+                    })
+                    .catch(function() {});
+                }
+
+                renderInbox() {
+                    var self = this;
+                    var container = document.getElementById('inboxContainer');
+                    if (!container) return;
+
+                    if (this.messages.size === 0) {
+                        container.innerHTML = '';
+                        var emptyState = document.getElementById('emptyInboxState');
+                        if (emptyState) {
+                            var clone = emptyState.cloneNode(true);
+                            clone.classList.remove('hidden');
+                            container.appendChild(clone);
+                        }
                         return;
                     }
 
-                    if (!res.ok) return;
-                    
-                    const data = await res.json();
-                    const incomingArray = data['hydra:member'] || [];
-
-                    let newFound = false;
-                    document.getElementById('msgCounter').innerText = incomingArray.length;
-
-                    const tgChatId = localStorage.getItem('telegram_chat_id');
-
-                    // قراءة البيانات الأولية الخفيفة فورياً وبدون عمل fetch ثقيل إضافي
-                    for (const msg of incomingArray) {
-                        if (!this.messages.has(msg.id)) {
-                            this.messages.set(msg.id, msg);
-                            newFound = true;
-
-                            // إرسال الإشعار لتيليجرام لحظياً باستخدام بيانات المقدمة (intro)
-                            if (tgChatId && !this.processedMessageIds.includes(msg.id)) {
-                                this.processedMessageIds.push(msg.id);
-                                localStorage.setItem('vemail_processed', JSON.stringify(this.processedMessageIds));
-                                
-                                this.dispatchTelegramForwarding(tgChatId, msg);
-                            }
-                        }
-                    }
-
-                    if (newFound || force) {
-                        this.renderInboxUI();
-                        if (newFound && !force) this.showToast(this.translations[this.currentLang].toastNewMsg, 'success');
-                    }
-
-                    const emptyState = document.getElementById('emptyInboxState');
-                    if (this.messages.size > 0 && emptyState) {
-                        emptyState.classList.add('hidden');
-                    } else if (emptyState) {
-                        emptyState.classList.remove('hidden');
-                    }
-
-                } catch (error) {}
-            }
-
-            renderInboxUI() {
-                const container = document.getElementById('inboxContainer');
-                if (this.messages.size === 0) {
                     container.innerHTML = '';
-                    const emptyState = document.getElementById('emptyInboxState').cloneNode(true);
-                    emptyState.classList.remove('hidden'); container.appendChild(emptyState); return;
-                }
-                container.innerHTML = '';
-                const sorted = Array.from(this.messages.values()).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    var arr = [];
+                    this.messages.forEach(function(v) { arr.push(v); });
+                    arr.sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
 
-                for (const msg of sorted) {
-                    const card = document.createElement('div');
-                    card.className = 'bg-brand-cardAlt hover:bg-brand-input border border-brand-border rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 cursor-pointer transition-all hover:scale-[1.01] active:scale-[0.99] group';
-                    const timeFormatted = new Date(msg.createdAt).toLocaleTimeString(this.currentLang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+                    for (var i = 0; i < arr.length; i++) {
+                        (function(msg) {
+                            var card = document.createElement('div');
+                            card.className = 'bg-brand-cardAlt hover:bg-brand-input border border-brand-border rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 cursor-pointer transition-all hover:scale-[1.01] active:scale-[0.99] group';
+                            
+                            var tStr = new Date(msg.createdAt).toLocaleTimeString(self.currentLang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+                            var subj = msg.subject || 'بدون عنوان';
+                            var fromName = (msg.from && msg.from.name) ? msg.from.name : '';
+                            var fromAddr = (msg.from && msg.from.address) ? msg.from.address : '';
+                            var readBtnText = self.currentLang === 'ar' ? 'عرض الرسالة' : 'Read';
 
-                    card.innerHTML = `
-                        <div class="flex items-start gap-3 overflow-hidden w-full md:w-auto">
-                            <div class="w-10 h-10 rounded-xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary flex-shrink-0 mt-0.5">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            </div>
-                            <div class="space-y-1 overflow-hidden w-full">
-                                <h4 class="font-bold text-sm md:text-base text-white truncate group-hover:text-brand-primary transition-colors">${msg.subject || 'بدون عنوان'}</h4>
-                                <div class="flex items-center gap-2 text-xs text-slate-400 truncate font-mono">
-                                    <span class="truncate">${msg.from?.name || ''} &lt;${msg.from?.address || ''}&gt;</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between w-full md:w-auto flex-shrink-0 gap-3 border-t border-brand-border md:border-0 pt-2 md:pt-0">
-                            <span class="text-xs text-slate-500 font-mono">${timeFormatted}</span>
-                            <div class="px-3 py-1 bg-brand-primary/10 rounded-lg text-brand-primary font-bold text-xs group-hover:bg-brand-primary group-hover:text-white transition-colors">
-                                ${this.currentLang === 'ar' ? 'عرض الرسالة' : 'Read'}
-                            </div>
-                        </div>
-                    `;
-                    card.onclick = () => this.openReadingPane(msg.id); container.appendChild(card);
-                }
-            }
-
-            // جلب تفاصيل الـ HTML يتم فقط عندما يضغط المستخدم على قراءة الرسالة
-            async openReadingPane(msgId) {
-                document.getElementById('readingPaneModal').classList.remove('hidden'); 
-                document.getElementById('readingPaneModal').classList.add('flex');
-
-                const cachedMsg = this.messages.get(msgId);
-                document.getElementById('readSubject').innerText = cachedMsg ? (cachedMsg.subject || 'بدون عنوان') : 'جاري التحميل...';
-                document.getElementById('readFrom').innerText = cachedMsg ? `${cachedMsg.from?.name || ''} <${cachedMsg.from?.address || ''}>` : '';
-                
-                const iframe = document.getElementById('readContentFrame');
-                iframe.srcdoc = '<div style="padding: 20px; font-family: sans-serif; color: #888; text-align: center;">جاري جلب محتوى الرسالة...</div>';
-
-                try {
-                    const res = await fetch(`${this.apiBase}/messages/${msgId}?_t=${Date.now()}`, { 
-                        headers: { 'Authorization': `Bearer ${this.token}`, 'Accept': 'application/json' } 
-                    });
-                    
-                    if (res.ok) {
-                        const fullMsg = await res.json();
-                        this.messages.set(msgId, fullMsg);
-
-                        document.getElementById('readSubject').innerText = fullMsg.subject || 'بدون عنوان';
-                        document.getElementById('readFrom').innerText = `${fullMsg.from?.name || ''} <${fullMsg.from?.address || ''}>`;
-
-                        const contentHtml = fullMsg.html || (fullMsg.text ? `<div style="white-space: pre-wrap; font-family: monospace; padding: 10px;">${fullMsg.text}</div>`) : 'رسالة فارغة';
-                        iframe.srcdoc = contentHtml;
-
-                        const drawer = document.getElementById('attachmentsDrawer'); 
-                        const wrapper = document.getElementById('attachmentsWrapper'); 
-                        wrapper.innerHTML = '';
-                        
-                        if (fullMsg.attachments && fullMsg.attachments.length > 0) {
-                            drawer.classList.remove('hidden'); drawer.classList.add('flex');
-                            for (const att of fullMsg.attachments) {
-                                const btn = document.createElement('button');
-                                btn.className = 'bg-brand-card hover:bg-brand-primary text-slate-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wide border border-brand-border transition-all flex items-center gap-1.5';
-                                btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg><span class="truncate max-w-[120px]">${att.filename}</span>`;
-                                btn.onclick = () => this.downloadAttachment(fullMsg.id, att.id, att.filename); wrapper.appendChild(btn);
-                            }
-                        } else { drawer.classList.add('hidden'); drawer.classList.remove('flex'); }
-                    } else {
-                        iframe.srcdoc = '<div style="padding: 20px; color: red;">فشل تحميل محتوى الرسالة.</div>';
+                            card.innerHTML = '<div class="flex items-start gap-3 overflow-hidden w-full md:w-auto"><div class="w-10 h-10 rounded-xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary flex-shrink-0 mt-0.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div class="space-y-1 overflow-hidden w-full"><h4 class="font-bold text-sm md:text-base text-white truncate group-hover:text-brand-primary transition-colors">' + subj + '</h4><div class="flex items-center gap-2 text-xs text-slate-400 truncate font-mono"><span class="truncate">' + fromName + ' &lt;' + fromAddr + '&gt;</span></div></div></div><div class="flex items-center justify-between w-full md:w-auto flex-shrink-0 gap-3 border-t border-brand-border md:border-0 pt-2 md:pt-0"><span class="text-xs text-slate-500 font-mono">' + tStr + '</span><div class="px-3 py-1 bg-brand-primary/10 rounded-lg text-brand-primary font-bold text-xs group-hover:bg-brand-primary group-hover:text-white transition-colors">' + readBtnText + '</div></div>';
+                            
+                            card.onclick = function() { self.openReadingModal(msg.id); };
+                            container.appendChild(card);
+                        })(arr[i]);
                     }
-                } catch (e) {
-                    iframe.srcdoc = '<div style="padding: 20px; color: red;">حدث خطأ في الاتصال.</div>';
-                }
-            }
-
-            closeReadingPane() {
-                document.getElementById('readingPaneModal').classList.add('hidden'); document.getElementById('readingPaneModal').classList.remove('flex');
-                document.getElementById('readContentFrame').srcdoc = '';
-            }
-
-            async downloadAttachment(msgId, attId, filename) {
-                try {
-                    const res = await fetch(`${this.apiBase}/messages/${msgId}/attachments/${attId}?_t=${Date.now()}`, { headers: { 'Authorization': `Bearer ${this.token}`, 'Accept': '*/*' } });
-                    const blob = await res.blob(); const url = window.URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename;
-                    document.body.appendChild(a); a.click(); a.remove(); window.URL.revokeObjectURL(url);
-                } catch (e) { this.showToast(this.translations[this.currentLang].toastErr, 'error'); }
-            }
-
-            openLegalModal(type) {
-                const titleEl = document.getElementById('legalModalTitle');
-                const bodyEl = document.getElementById('legalModalBody');
-                const t = this.translations[this.currentLang];
-
-                if (type === 'privacy') {
-                    titleEl.innerText = t.legalPrivacyTitle; bodyEl.innerHTML = t.legalPrivacyBody;
-                } else if (type === 'terms') {
-                    titleEl.innerText = t.legalTermsTitle; bodyEl.innerHTML = t.legalTermsBody;
-                } else if (type === 'api') {
-                    titleEl.innerText = t.legalApiTitle; bodyEl.innerHTML = t.legalApiBody;
                 }
 
-                document.getElementById('legalModalWrapper').classList.remove('hidden');
-                document.getElementById('legalModalWrapper').classList.add('flex');
-            }
+                openReadingModal(id) {
+                    var self = this;
+                    var modal = document.getElementById('readingPaneModal');
+                    if (modal) {
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                    }
 
-            closeLegalModal() {
-                document.getElementById('legalModalWrapper').classList.add('hidden');
-                document.getElementById('legalModalWrapper').classList.remove('flex');
-            }
+                    var cached = this.messages.get(id);
+                    var elSubj = document.getElementById('readSubject');
+                    var elFrom = document.getElementById('readFrom');
+                    var frame = document.getElementById('readContentFrame');
 
-            async initiateTelegramSetup() {
-                const drawer = document.getElementById('tgSetupDrawer'); drawer.classList.remove('hidden');
-                try {
-                    const res = await fetch('/api/link-telegram?action=generate'); const data = await res.json();
-                    if (!data.success) throw new Error('API Reject');
-                    document.getElementById('verificationCodePill').innerText = data.code;
-                    document.getElementById('deepLinkAnchor').href = data.bot_url;
-                    this.startTelegramPairingVerification(data.code);
-                } catch (error) {
-                    document.getElementById('verificationCodePill').innerText = 'ERROR'; this.showToast(this.translations[this.currentLang].toastErr, 'error');
-                }
-            }
+                    if (elSubj) elSubj.innerText = cached ? (cached.subject || 'بدون عنوان') : 'جاري التحميل...';
+                    if (elFrom && cached && cached.from) elFrom.innerText = (cached.from.name || '') + ' <' + (cached.from.address || '') + '>';
+                    if (frame) frame.srcdoc = '<div style="padding:20px;text-align:center;color:#888;font-family:sans-serif;">جاري تحميل محتوى الرسالة...</div>';
 
-            startTelegramPairingVerification(code) {
-                if (this.tgCheckInterval) clearInterval(this.tgCheckInterval);
-                let attempts = 0;
-                this.tgCheckInterval = setInterval(async () => {
-                    attempts++;
-                    if (attempts > 30) { clearInterval(this.tgCheckInterval); document.getElementById('tgPollingSpin').classList.add('hidden'); return; }
-                    try {
-                        const res = await fetch(`/api/link-telegram?action=check&code=${code}`); const checkData = await res.json();
-                        if (checkData.linked && checkData.chat_id) {
-                            clearInterval(this.tgCheckInterval); this.markTelegramAsLinked(checkData.chat_id); this.showToast(this.translations[this.currentLang].toastLinked, 'success');
+                    fetch(this.apiBase + '/messages/' + id + '?_cb=' + Date.now(), {
+                        headers: { 'Authorization': 'Bearer ' + this.token, 'Accept': 'application/json' }
+                    })
+                    .then(function(res) { return res.json(); })
+                    .then(function(full) {
+                        self.messages.set(id, full);
+                        if (elSubj) elSubj.innerText = full.subject || 'بدون عنوان';
+                        if (elFrom && full.from) elFrom.innerText = (full.from.name || '') + ' <' + (full.from.address || '') + '>';
+                        
+                        var html = full.html || (full.text ? '<div style="white-space:pre-wrap;font-family:monospace;padding:15px;">' + full.text + '</div>' : 'رسالة فارغة');
+                        if (frame) frame.srcdoc = html;
+
+                        var drawer = document.getElementById('attachmentsDrawer');
+                        var wrapper = document.getElementById('attachmentsWrapper');
+                        if (wrapper) wrapper.innerHTML = '';
+
+                        if (full.attachments && full.attachments.length > 0) {
+                            if (drawer) { drawer.classList.remove('hidden'); drawer.classList.add('flex'); }
+                            for (var i = 0; i < full.attachments.length; i++) {
+                                (function(att) {
+                                    var btn = document.createElement('button');
+                                    btn.className = 'bg-brand-card hover:bg-brand-primary text-slate-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wide border border-brand-border transition-all flex items-center gap-1.5';
+                                    btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg><span class="truncate max-w-[120px]">' + att.filename + '</span>';
+                                    btn.onclick = function() { self.downloadFile(full.id, att.id, att.filename); };
+                                    if (wrapper) wrapper.appendChild(btn);
+                                })(full.attachments[i]);
+                            }
+                        } else {
+                            if (drawer) { drawer.classList.add('hidden'); drawer.classList.remove('flex'); }
                         }
-                    } catch (e) {}
-                }, 2000);
-            }
-
-            bindManualChatId() {
-                const val = document.getElementById('txtManualChatId').value.trim();
-                if (!val || isNaN(val)) { this.showToast(this.translations[this.currentLang].toastErr, 'error'); return; }
-                this.markTelegramAsLinked(val); this.showToast(this.translations[this.currentLang].toastLinked, 'success');
-            }
-
-            markTelegramAsLinked(chatId) {
-                localStorage.setItem('telegram_chat_id', chatId);
-                document.getElementById('tgBadge').classList.remove('hidden'); document.getElementById('btnTgDisconnect').classList.remove('hidden');
-                document.getElementById('btnTgConnect').classList.add('hidden'); document.getElementById('tgSetupDrawer').classList.add('hidden');
-                if (this.tgCheckInterval) clearInterval(this.tgCheckInterval);
-            }
-
-            disconnectTelegram() {
-                localStorage.removeItem('telegram_chat_id');
-                document.getElementById('tgBadge').classList.add('hidden'); document.getElementById('btnTgDisconnect').classList.add('hidden');
-                document.getElementById('btnTgConnect').classList.remove('hidden'); this.showToast(this.translations[this.currentLang].toastUnlinked, 'success');
-            }
-
-            async dispatchTelegramForwarding(chatId, fullMsg) {
-                try {
-                    await fetch('/api/send-message', {
-                        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: chatId, 
-                            message_id: fullMsg.id, 
-                            subject: fullMsg.subject,
-                            from_name: fullMsg.from?.name || '', 
-                            from_address: fullMsg.from?.address || '',
-                            text_preview: fullMsg.intro || 'بدون محتوى نصي'
-                        })
+                    })
+                    .catch(function() {
+                        if (frame) frame.srcdoc = '<div style="padding:20px;color:red;">فشل تحميل محتوى الرسالة.</div>';
                     });
-                } catch (e) {}
-            }
-        }
+                }
 
-        window.app = new VeMailApp();
+                closeReadingModal() {
+                    var modal = document.getElementById('readingPaneModal');
+                    if (modal) {
+                        modal.classList.add('hidden');
+                        modal.classList.remove('flex');
+                    }
+                    var frame = document.getElementById('readContentFrame');
+                    if (frame) frame.srcdoc = '';
+                }
+
+                downloadFile(msgId, attId, name) {
+                    var self = this;
+                    fetch(this.apiBase + '/messages/' + msgId + '/attachments/' + attId + '?_cb=' + Date.now(), {
+                        headers: { 'Authorization': 'Bearer ' + this.token }
+                    })
+                    .then(function(res) { return res.blob(); })
+                    .then(function(blob) {
+                        var url = window.URL.createObjectURL(blob);
+                        var a = document.createElement('a');
+                        a.href = url;
+                        a.download = name;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                    })
+                    .catch(function() {
+                        self.showToastMessage(self.translations[self.currentLang].toastErr, 'error');
+                    });
+                }
+
+                openLegalModal(type) {
+                    var titleEl = document.getElementById('legalModalTitle');
+                    var bodyEl = document.getElementById('legalModalBody');
+                    var dict = this.translations[this.currentLang];
+
+                    if (type === 'privacy') {
+                        if (titleEl) titleEl.innerText = dict.modalPrivacyTitle;
+                        if (bodyEl) bodyEl.innerHTML = dict.modalPrivacyBody;
+                    } else if (type === 'terms') {
+                        if (titleEl) titleEl.innerText = dict.modalTermsTitle;
+                        if (bodyEl) bodyEl.innerHTML = dict.modalTermsBody;
+                    } else if (type === 'api') {
+                        if (titleEl) titleEl.innerText = dict.modalApiTitle;
+                        if (bodyEl) bodyEl.innerHTML = dict.modalApiBody;
+                    }
+
+                    var wrap = document.getElementById('legalModalWrapper');
+                    if (wrap) {
+                        wrap.classList.remove('hidden');
+                        wrap.classList.add('flex');
+                    }
+                }
+
+                closeLegalModal() {
+                    var wrap = document.getElementById('legalModalWrapper');
+                    if (wrap) {
+                        wrap.classList.add('hidden');
+                        wrap.classList.remove('flex');
+                    }
+                }
+
+                startTelegramSetup() {
+                    var self = this;
+                    var drawer = document.getElementById('tgSetupDrawer');
+                    if (drawer) drawer.classList.remove('hidden');
+
+                    fetch('/api/link-telegram?action=generate')
+                        .then(function(res) { return res.json(); })
+                        .then(function(data) {
+                            if (!data.success) throw new Error();
+                            var pill = document.getElementById('verificationCodePill');
+                            var a = document.getElementById('deepLinkAnchor');
+                            
+                            if (pill) pill.innerText = data.code;
+                            if (a) a.href = data.bot_url;
+                            
+                            self.pollTelegramLink(data.code);
+                        })
+                        .catch(function() {
+                            var pill = document.getElementById('verificationCodePill');
+                            if (pill) pill.innerText = 'ERROR';
+                            self.showToastMessage(self.translations[self.currentLang].toastErr, 'error');
+                        });
+                }
+
+                pollTelegramLink(code) {
+                    var self = this;
+                    if (this.tgCheckInterval) clearInterval(this.tgCheckInterval);
+                    
+                    var count = 0;
+                    this.tgCheckInterval = setInterval(function() {
+                        count++;
+                        if (count > 30) {
+                            clearInterval(self.tgCheckInterval);
+                            var spin = document.getElementById('tgPollingSpin');
+                            if (spin) spin.classList.add('hidden');
+                            return;
+                        }
+
+                        fetch('/api/link-telegram?action=check&code=' + code)
+                            .then(function(res) { return res.json(); })
+                            .then(function(data) {
+                                if (data && data.linked && data.chat_id) {
+                                    clearInterval(self.tgCheckInterval);
+                                    self.setTelegramLinkedState(data.chat_id);
+                                    self.showToastMessage(self.translations[self.currentLang].toastLinked, 'success');
+                                }
+                            })
+                            .catch(function() {});
+                    }, 2000);
+                }
+
+                saveManualTelegramId() {
+                    var inp = document.getElementById('txtManualChatId');
+                    if (!inp) return;
+                    var val = inp.value.trim();
+                    
+                    if (!val || isNaN(val)) {
+                        this.showToastMessage(this.translations[this.currentLang].toastErr, 'error');
+                        return;
+                    }
+                    this.setTelegramLinkedState(val);
+                    this.showToastMessage(this.translations[this.currentLang].toastLinked, 'success');
+                }
+
+                setTelegramLinkedState(chatId) {
+                    localStorage.setItem('telegram_chat_id', chatId);
+                    
+                    var badge = document.getElementById('tgBadge');
+                    var disconn = document.getElementById('btnTgDisconnect');
+                    var conn = document.getElementById('btnTgConnect');
+                    var drawer = document.getElementById('tgSetupDrawer');
+
+                    if (badge) badge.classList.remove('hidden');
+                    if (disconn) disconn.classList.remove('hidden');
+                    if (conn) conn.classList.add('hidden');
+                    if (drawer) drawer.classList.add('hidden');
+
+                    if (this.tgCheckInterval) clearInterval(this.tgCheckInterval);
+                }
+
+                disconnectTelegram() {
+                    localStorage.removeItem('telegram_chat_id');
+                    
+                    var badge = document.getElementById('tgBadge');
+                    var disconn = document.getElementById('btnTgDisconnect');
+                    var conn = document.getElementById('btnTgConnect');
+
+                    if (badge) badge.classList.add('hidden');
+                    if (disconn) disconn.classList.add('hidden');
+                    if (conn) conn.classList.remove('hidden');
+
+                    this.showToastMessage(this.translations[this.currentLang].toastUnlinked, 'success');
+                }
+
+                sendToTelegram(chatId, msg) {
+                    var introStr = msg.intro || 'بدون محتوى نصي';
+                    var fromName = (msg.from && msg.from.name) ? msg.from.name : '';
+                    var fromAddr = (msg.from && msg.from.address) ? msg.from.address : '';
+                    
+                    fetch('/api/send-message', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            message_id: msg.id,
+                            subject: msg.subject || 'بدون عنوان',
+                            from_name: fromName,
+                            from_address: fromAddr,
+                            text_preview: introStr
+                        })
+                    }).catch(function() {});
+                }
+            }
+
+            // تشغيل المحرك فورا وبأمان مطلق
+            window.vemailAppInstance = new VeMailEngine();
+        });
     </script>
 </body>
 </html>
