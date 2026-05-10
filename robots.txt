@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /messages/
+
+Sitemap: https://www.vemail.pp.ua/sitemap.xml
