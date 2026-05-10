@@ -4,22 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>VeMail - بريد مؤقت فوري مع ربط تيليجرام | Premium Temp Mail</title>
-    <meta name="description" content="احصل على بريد إلكتروني مؤقت ومجهول تماماً مع ميزة التحويل الفوري لرسائل التفعيل إلى حسابك في تيليجرام بدون تسجيل. Premium disposable email forwarding.">
-    <meta name="keywords" content="بريد مؤقت, مهمل, بريد عشوائي, تيليجرام, temp mail, disposable email, telegram forwarding, 10minutemail">
-    <meta name="author" content="VeMail Platform">
-    <meta name="robots" content="index, follow">
-    
-    <!-- OpenGraph SEO -->
-    <meta property="og:title" content="VeMail - بريد مؤقت فوري وتفعيل تيليجرام">
-    <meta property="og:description" content="منصة البريد المؤقت الفورية الأولى. استقبل رسائل التفعيل على الموقع أو عبر تيليجرام بلحظات معدودة.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://vemail.vercel.app">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1200&q=80">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="VeMail - Premium Realtime Temp Mail">
-    <meta name="twitter:description" content="Disposable email addresses supercharged with instant serverless Telegram push notifications.">
+    <meta name="description" content="احصل على بريد إلكتروني مؤقت ومجهول تماماً مع ميزة التحويل الفوري لرسائل التفعيل إلى حسابك في تيليجرام بدون تسجيل.">
     
     <!-- Google Fonts & Tailwind CSS CDN -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,7 +39,6 @@
     </script>
 
     <style>
-        /* Highly Optimized Premium Enhancements */
         body { font-family: 'Cairo', sans-serif; }
         .glass-panel {
             background: rgba(19, 25, 44, 0.75);
@@ -66,59 +50,23 @@
             background: rgba(255, 255, 255, 0.85);
             border-color: rgba(226, 232, 240, 1);
         }
-        /* Custom Smooth Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0b0f19; }
         ::-webkit-scrollbar-thumb { background: #232b47; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #5b51d8; }
-        /* Toast Alert Container */
         #toast-container { z-index: 99999; }
-        /* CLS-safe placeholders */
         .ads-container { min-height: 90px; }
     </style>
-
-    <!-- Structured JSON-LD Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebSite",
-          "@id": "https://vemail.vercel.app/#website",
-          "url": "https://vemail.vercel.app",
-          "name": "VeMail",
-          "description": "منصة بريد مؤقت متطورة مع تحويل فوري لتيليجرام",
-          "inLanguage": "ar"
-        },
-        {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "كيف يعمل البريد المؤقت مع تيليجرام؟",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "يقوم النظام بتوليد عنوان بريد فريد لك. عند ربط حسابك في تيليجرام عبر الكود المؤقت، يتم تحويل كل رسالة واردة فورياً إلى محادثتك في تيليجرام بدون تخزينها بقواعد بياناتنا."
-              }
-            }
-          ]
-        }
-      ]
-    }
-    </script>
 </head>
 
 <body class="bg-brand-bg text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
     
-    <!-- Notification System Layout -->
     <div id="toast-container" class="fixed top-5 left-5 right-5 md:left-auto md:right-5 flex flex-col gap-3 max-w-sm pointer-events-none transition-all"></div>
 
-    <!-- MAIN HEADER -->
     <header class="border-b border-brand-border bg-brand-bg/80 sticky top-0 z-50 backdrop-blur-md">
         <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
-            <!-- Dynamic Actions (Language & Theme Toggles) -->
             <div class="flex items-center gap-3">
-                <button id="langToggle" onclick="app.toggleLanguage()" class="px-3 py-1.5 rounded-lg bg-brand-cardAlt border border-brand-border hover:border-brand-primary transition-all text-sm font-bold tracking-wide flex items-center gap-1">
+                <button onclick="app.toggleLanguage()" class="px-3 py-1.5 rounded-lg bg-brand-cardAlt border border-brand-border hover:border-brand-primary transition-all text-sm font-bold tracking-wide flex items-center gap-1">
                     <span id="langText">EN</span>
                 </button>
                 <button onclick="app.toggleTheme()" class="p-2.5 rounded-lg bg-brand-cardAlt border border-brand-border hover:border-brand-primary transition-all text-yellow-400 hover:text-yellow-300" aria-label="Toggle Theme">
@@ -127,7 +75,6 @@
                 </button>
             </div>
 
-            <!-- Authentic Brand Identity Logo exactly matching original -->
             <div class="flex items-center gap-3">
                 <div class="flex items-center tracking-tighter text-2xl font-black font-mono">
                     <span class="text-slate-100 dark:text-white">VE</span>
@@ -140,18 +87,13 @@
         </div>
     </header>
 
-    <!-- CONTENT WRAPPER -->
     <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-8 flex flex-col gap-8">
 
-        <!-- PRESERVED ADSENSE HEADER SLOT -->
         <section class="ads-container w-full rounded-2xl border border-dashed border-brand-border bg-brand-card/30 flex items-center justify-center p-4">
             <span class="text-xs text-slate-500 tracking-widest font-mono" id="lblAdHeader">ADSENSE HEADER - إعلان علوي</span>
-            <!-- Inject dynamic AdSense client block here safely -->
         </section>
 
-        <!-- CORE ACCOUNT DASHBOARD CARD -->
         <section class="glass-panel rounded-3xl p-6 md:p-10 text-center flex flex-col items-center gap-6 shadow-2xl relative overflow-hidden">
-            <!-- Ambient Highlights -->
             <div class="absolute -top-24 -left-24 w-48 h-48 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none"></div>
             
             <div class="space-y-2 max-w-xl">
@@ -159,7 +101,6 @@
                 <p class="text-slate-400 text-sm md:text-base leading-relaxed" id="lblMainSub">احصل على رسائل التفعيل فوراً وبشكل مجهول تماماً.</p>
             </div>
 
-            <!-- Email Display & Interactive Copy Core -->
             <div class="w-full max-w-md flex flex-col gap-4 mt-2">
                 <div class="relative w-full">
                     <input id="emailAddressBox" readonly type="text" value="جاري توليد البريد..." class="w-full bg-brand-input border border-brand-border rounded-xl py-4 px-4 text-center font-mono text-sm md:text-base text-brand-primary font-semibold tracking-wide focus:outline-none transition-all selection:bg-brand-primary selection:text-white" dir="ltr">
@@ -175,7 +116,6 @@
                 </button>
             </div>
 
-            <!-- Action Controls Row -->
             <div class="flex items-center justify-center gap-6 pt-2 text-sm font-semibold text-slate-400 w-full">
                 <button onclick="app.checkInboxForce()" class="flex items-center gap-2 hover:text-white transition-colors group">
                     <svg class="w-4 h-4 group-active:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
@@ -189,7 +129,7 @@
             </div>
         </section>
 
-        <!-- ADVANCED SERVERLESS TELEGRAM INTEGRATION PLATFORM -->
+        <!-- TELEGRAM SECTION -->
         <section class="glass-panel rounded-3xl p-6 border-l-4 border-l-brand-telegram relative overflow-hidden transition-all">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-start gap-4">
@@ -205,7 +145,6 @@
                     </div>
                 </div>
 
-                <!-- Connect Action Trigger -->
                 <div class="w-full md:w-auto flex flex-col gap-2">
                     <button id="btnTgConnect" onclick="app.initiateTelegramSetup()" class="w-full md:w-auto bg-brand-telegram hover:bg-brand-telegram/90 active:scale-[0.98] transition-all text-white font-bold px-5 py-3 rounded-xl shadow-md text-sm flex items-center justify-center gap-2 whitespace-nowrap">
                         <span id="lblTgBtn">🚀 تفعيل بوت تيليجرام</span>
@@ -216,7 +155,6 @@
                 </div>
             </div>
 
-            <!-- Expandable Serverless Setup Step Dashboard -->
             <div id="tgSetupDrawer" class="hidden mt-6 pt-6 border-t border-brand-border flex flex-col gap-6 animate-fade-in">
                 <div class="bg-brand-input rounded-2xl p-5 border border-brand-border space-y-4">
                     <div class="flex items-center justify-between">
@@ -238,7 +176,6 @@
                     </div>
                 </div>
 
-                <!-- 100% Robust Database-Free Fallback System -->
                 <div class="bg-brand-cardAlt rounded-xl p-4 border border-brand-border space-y-2">
                     <label class="block text-xs font-bold text-slate-400" id="lblManualIdFallback">لم يتم الربط تلقائياً؟ أدخل معرّف المحادثة (Chat ID) المرسل من البوت:</label>
                     <div class="flex gap-2">
@@ -251,10 +188,8 @@
             </div>
         </section>
 
-        <!-- PRESERVED ADSENSE FEED SLOT -->
         <section class="ads-container w-full rounded-2xl border border-dashed border-brand-border bg-brand-card/30 flex items-center justify-center p-4">
             <span class="text-xs text-slate-500 tracking-widest font-mono" id="lblAdFeed">ADSENSE FEED - إعلان وسط الصندوق</span>
-            <!-- Inject dynamic AdSense slot block here safely -->
         </section>
 
         <!-- REALTIME INBOX ENGINE -->
@@ -270,9 +205,7 @@
                 </div>
             </div>
 
-            <!-- Inbox Body Wrappers -->
             <div id="inboxContainer" class="min-h-[250px] flex flex-col gap-3">
-                <!-- Empty State Pulse Indicator -->
                 <div id="emptyInboxState" class="flex-grow flex flex-col items-center justify-center gap-4 py-12 text-slate-500 animate-fade-in">
                     <div class="w-16 h-16 rounded-full bg-brand-input border border-brand-border flex items-center justify-center text-slate-600">
                         <svg class="w-8 h-8 animate-bounce duration-1000" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
@@ -300,7 +233,6 @@
             </div>
             
             <div class="p-5 flex-grow overflow-y-auto bg-white dark:bg-brand-bg text-slate-900 dark:text-slate-100 transition-colors">
-                <!-- Highly secure iframe encapsulation sandbox -->
                 <iframe id="readContentFrame" class="w-full min-h-[300px] border-0" sandbox=""></iframe>
             </div>
 
@@ -311,7 +243,6 @@
         </div>
     </div>
 
-    <!-- ELITE FOOTER -->
     <footer class="border-t border-brand-border bg-brand-bg py-8 mt-12">
         <div class="max-w-6xl mx-auto px-4 text-center space-y-3">
             <div class="flex items-center justify-center gap-6 text-xs text-slate-500 font-semibold">
@@ -322,17 +253,12 @@
                 <a href="#" class="hover:text-brand-primary transition-colors" id="ftApi">واجهة المطورين API</a>
             </div>
             <p class="text-xs text-slate-600 font-mono tracking-wide">
-                © <span id="curYear">2026</span> VeMail Serverless Platform. Made strictly for Vercel.
+                © <span id="curYear">2026</span> VeMail Serverless Platform.
             </p>
         </div>
     </footer>
 
-    <!-- COMPLETE VANILLA JS CORE APP ARCHITECTURE -->
     <script>
-        /**
-         * VeMail Application Controller
-         * Engineered without external UI libraries or dependencies.
-         */
         class VeMailApp {
             constructor() {
                 this.apiBase = 'https://api.mail.tm';
@@ -349,105 +275,49 @@
                 
                 this.translations = {
                     ar: {
-                        langText: 'EN',
-                        lblAdHeader: 'ADSENSE HEADER - إعلان علوي',
-                        lblMainTitle: 'بريدك المؤقت جاهز',
-                        lblMainSub: 'احصل على رسائل التفعيل فوراً وبشكل مجهول تماماً.',
-                        lblCreating: 'تهيئة الحساب...',
-                        lblCopyBtn: 'نسخ',
-                        lblForceRefresh: 'تحديث يدوي',
-                        lblChangeAddr: 'تغيير العنوان',
-                        lblTgTitle: 'ربط مع تيليجرام (اختياري)',
-                        lblTgDesc: 'استقبل رسائل التفعيل الجديدة مباشرة على حسابك في تيليجرام بدون الحاجة لإبقاء الموقع مفتوحاً.',
-                        lblTgBtn: '🚀 تفعيل بوت تيليجرام',
-                        lblTgDisconnect: 'إلغاء الارتباط',
-                        lblStep1: '1. اضغط على الزر لفتح البوت وتفعيل الكود الخاص بك:',
-                        lblWaitingTg: 'ننتظر الاتصال...',
-                        lblLaunchApp: 'فتح تطبيق تيليجرام',
-                        lblManualIdFallback: 'لم يتم الربط تلقائياً؟ أدخل معرّف المحادثة (Chat ID) المرسل من البوت:',
-                        lblSaveId: 'حفظ المعرف',
-                        lblAdFeed: 'ADSENSE FEED - إعلان وسط الصندوق',
-                        lblInboxTitle: 'صندوق الوارد المباشر',
-                        lblAutoCheckText: 'تحديث تلقائي مستمر',
-                        lblEmptyState: 'الصندوق فارغ حالياً. بانتظار وصول الرسائل...',
-                        lblAttachments: 'المرفقات:',
-                        toastCopied: 'تم نسخ البريد بنجاح!',
-                        toastLinked: 'تم ربط تيليجرام بنجاح!',
-                        toastUnlinked: 'تم إلغاء ربط تيليجرام',
-                        toastNewMsg: 'رسالة جديدة واردة!',
-                        toastErr: 'حدث خطأ، يرجى المحاولة مجدداً',
-                        ftPrivacy: 'سياسة الخصوصية',
-                        ftTerms: 'شروط الاستخدام',
-                        ftApi: 'واجهة المطورين API'
+                        langText: 'EN', lblAdHeader: 'ADSENSE HEADER - إعلان علوي', lblMainTitle: 'بريدك المؤقت جاهز',
+                        lblMainSub: 'احصل على رسائل التفعيل فوراً وبشكل مجهول تماماً.', lblCreating: 'تهيئة الحساب...',
+                        lblCopyBtn: 'نسخ', lblForceRefresh: 'تحديث يدوي', lblChangeAddr: 'تغيير العنوان',
+                        lblTgTitle: 'ربط مع تيليجرام (اختياري)', lblTgDesc: 'استقبل رسائل التفعيل الجديدة مباشرة على حسابك في تيليجرام بدون الحاجة لإبقاء الموقع مفتوحاً.',
+                        lblTgBtn: '🚀 تفعيل بوت تيليجرام', lblTgDisconnect: 'إلغاء الارتباط', lblStep1: '1. اضغط على الزر لفتح البوت وتفعيل الكود الخاص بك:',
+                        lblWaitingTg: 'ننتظر الاتصال...', lblLaunchApp: 'فتح تطبيق تيليجرام', lblManualIdFallback: 'لم يتم الربط تلقائياً؟ أدخل معرّف المحادثة (Chat ID) المرسل من البوت:',
+                        lblSaveId: 'حفظ المعرف', lblAdFeed: 'ADSENSE FEED - إعلان وسط الصندوق', lblInboxTitle: 'صندوق الوارد المباشر',
+                        lblAutoCheckText: 'تحديث تلقائي مستمر', lblEmptyState: 'الصندوق فارغ حالياً. بانتظار وصول الرسائل...',
+                        lblAttachments: 'المرفقات:', toastCopied: 'تم نسخ البريد بنجاح!', toastLinked: 'تم ربط تيليجرام بنجاح!',
+                        toastUnlinked: 'تم إلغاء ربط تيليجرام', toastNewMsg: 'رسالة جديدة واردة!', toastErr: 'حدث خطأ، يرجى المحاولة مجدداً',
+                        ftPrivacy: 'سياسة الخصوصية', ftTerms: 'شروط الاستخدام', ftApi: 'واجهة المطورين API'
                     },
                     en: {
-                        langText: 'AR',
-                        lblAdHeader: 'ADSENSE HEADER - TOP AD',
-                        lblMainTitle: 'Your Temp Mail is Ready',
-                        lblMainSub: 'Receive verification codes instantly and entirely anonymously.',
-                        lblCreating: 'Initializing account...',
-                        lblCopyBtn: 'Copy',
-                        lblForceRefresh: 'Manual Refresh',
-                        lblChangeAddr: 'Change Address',
-                        lblTgTitle: 'Connect Telegram (Optional)',
-                        lblTgDesc: 'Receive incoming verification emails directly via your Telegram account instantly.',
-                        lblTgBtn: '🚀 Activate Telegram Bot',
-                        lblTgDisconnect: 'Disconnect',
-                        lblStep1: '1. Click below to launch the bot and trigger your code:',
-                        lblWaitingTg: 'Awaiting connection...',
-                        lblLaunchApp: 'Open Telegram App',
-                        lblManualIdFallback: 'Did not auto-link? Enter the Chat ID sent by the bot:',
-                        lblSaveId: 'Save ID',
-                        lblAdFeed: 'ADSENSE FEED - CENTER AD',
-                        lblInboxTitle: 'Realtime Inbox',
-                        lblAutoCheckText: 'Continual auto-refresh',
-                        lblEmptyState: 'Inbox is currently empty. Awaiting incoming messages...',
-                        lblAttachments: 'Attachments:',
-                        toastCopied: 'Email copied successfully!',
-                        toastLinked: 'Telegram successfully linked!',
-                        toastUnlinked: 'Telegram link removed',
-                        toastNewMsg: 'New incoming message!',
-                        toastErr: 'An error occurred, please retry',
-                        ftPrivacy: 'Privacy Policy',
-                        ftTerms: 'Terms of Use',
-                        ftApi: 'API Documentation'
+                        langText: 'AR', lblAdHeader: 'ADSENSE HEADER - TOP AD', lblMainTitle: 'Your Temp Mail is Ready',
+                        lblMainSub: 'Receive verification codes instantly and entirely anonymously.', lblCreating: 'Initializing account...',
+                        lblCopyBtn: 'Copy', lblForceRefresh: 'Manual Refresh', lblChangeAddr: 'Change Address',
+                        lblTgTitle: 'Connect Telegram (Optional)', lblTgDesc: 'Receive incoming verification emails directly via your Telegram account instantly.',
+                        lblTgBtn: '🚀 Activate Telegram Bot', lblTgDisconnect: 'Disconnect', lblStep1: '1. Click below to launch the bot and trigger your code:',
+                        lblWaitingTg: 'Awaiting connection...', lblLaunchApp: 'Open Telegram App', lblManualIdFallback: 'Did not auto-link? Enter the Chat ID sent by the bot:',
+                        lblSaveId: 'Save ID', lblAdFeed: 'ADSENSE FEED - CENTER AD', lblInboxTitle: 'Realtime Inbox',
+                        lblAutoCheckText: 'Continual auto-refresh', lblEmptyState: 'Inbox is currently empty. Awaiting incoming messages...',
+                        lblAttachments: 'Attachments:', toastCopied: 'Email copied successfully!', toastLinked: 'Telegram successfully linked!',
+                        toastUnlinked: 'Telegram link removed', toastNewMsg: 'New incoming message!', toastErr: 'An error occurred, please retry',
+                        ftPrivacy: 'Privacy Policy', ftTerms: 'Terms of Use', ftApi: 'API Documentation'
                     }
                 };
 
-                // Initialize runtime sequence
                 document.getElementById('curYear').innerText = new Date().getFullYear();
                 this.loadPreferences();
                 this.bootAccountEngine();
             }
 
-            /* UI Engine & Toast Layer */
             showToast(message, type = 'success') {
                 const container = document.getElementById('toast-container');
                 const toast = document.createElement('div');
-                
-                const bgColors = type === 'success' 
-                    ? 'bg-[#161d33] border-emerald-500/40 text-emerald-400' 
-                    : 'bg-[#161d33] border-rose-500/40 text-rose-400';
-
+                const bgColors = type === 'success' ? 'bg-[#161d33] border-emerald-500/40 text-emerald-400' : 'bg-[#161d33] border-rose-500/40 text-rose-400';
                 toast.className = `flex items-center gap-3 px-4 py-3 rounded-2xl border ${bgColors} shadow-xl backdrop-blur-lg transform transition-all translate-y-[-10px] opacity-0 text-xs md:text-sm font-bold font-mono`;
-                toast.innerHTML = `
-                    <div class="w-2 h-2 rounded-full ${type === 'success' ? 'bg-emerald-500' : 'bg-rose-500'} animate-ping"></div>
-                    <span>${message}</span>
-                `;
-
+                toast.innerHTML = `<div class="w-2 h-2 rounded-full ${type === 'success' ? 'bg-emerald-500' : 'bg-rose-500'} animate-ping"></div><span>${message}</span>`;
                 container.appendChild(toast);
-                setTimeout(() => {
-                    toast.classList.remove('translate-y-[-10px]', 'opacity-0');
-                    toast.classList.add('translate-y-0', 'opacity-100');
-                }, 10);
-
-                setTimeout(() => {
-                    toast.classList.add('opacity-0', 'scale-95');
-                    setTimeout(() => toast.remove(), 300);
-                }, 3500);
+                setTimeout(() => { toast.classList.remove('translate-y-[-10px]', 'opacity-0'); toast.classList.add('translate-y-0', 'opacity-100'); }, 10);
+                setTimeout(() => { toast.classList.add('opacity-0', 'scale-95'); setTimeout(() => toast.remove(), 300); }, 3500);
             }
 
-            /* Interface Localization */
             toggleLanguage() {
                 this.currentLang = this.currentLang === 'ar' ? 'en' : 'ar';
                 localStorage.setItem('vemail_lang', this.currentLang);
@@ -458,15 +328,10 @@
                 const isAr = this.currentLang === 'ar';
                 document.documentElement.setAttribute('lang', this.currentLang);
                 document.documentElement.setAttribute('dir', isAr ? 'rtl' : 'ltr');
-
                 const t = this.translations[this.currentLang];
-                for (const key in t) {
-                    const el = document.getElementById(key);
-                    if (el) el.innerText = t[key];
-                }
+                for (const key in t) { const el = document.getElementById(key); if (el) el.innerText = t[key]; }
             }
 
-            /* Theme Configuration */
             toggleTheme() {
                 this.isDark = !this.isDark;
                 localStorage.setItem('vemail_dark', this.isDark ? '1' : '0');
@@ -476,130 +341,75 @@
             applyThemeUI() {
                 const darkIcon = document.getElementById('themeIconDark');
                 const lightIcon = document.getElementById('themeIconLight');
-
                 if (this.isDark) {
-                    document.documentElement.classList.add('dark');
-                    darkIcon.classList.remove('hidden');
-                    lightIcon.classList.add('hidden');
+                    document.documentElement.classList.add('dark'); darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden');
                 } else {
-                    document.documentElement.classList.remove('dark');
-                    darkIcon.classList.add('hidden');
-                    lightIcon.classList.remove('hidden');
+                    document.documentElement.classList.remove('dark'); darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden');
                 }
             }
 
             loadPreferences() {
                 const savedLang = localStorage.getItem('vemail_lang');
-                if (savedLang && (savedLang === 'ar' || savedLang === 'en')) {
-                    this.currentLang = savedLang;
-                }
-                
+                if (savedLang && (savedLang === 'ar' || savedLang === 'en')) this.currentLang = savedLang;
                 const savedTheme = localStorage.getItem('vemail_dark');
-                if (savedTheme !== null) {
-                    this.isDark = savedTheme === '1';
-                }
+                if (savedTheme !== null) this.isDark = savedTheme === '1';
+                this.applyLanguageUI(); this.applyThemeUI();
 
-                this.applyLanguageUI();
-                this.applyThemeUI();
-
-                // Restore previously registered Telegram states
                 const tgLinked = localStorage.getItem('telegram_chat_id');
-                if (tgLinked) {
-                    this.markTelegramAsLinked(tgLinked);
-                }
+                if (tgLinked) this.markTelegramAsLinked(tgLinked);
 
-                // Restore historical processed messages cache
                 const storedProcessed = localStorage.getItem('vemail_processed');
-                if (storedProcessed) {
-                    try {
-                        this.processedMessageIds = JSON.parse(storedProcessed);
-                    } catch (e) {
-                        this.processedMessageIds = [];
-                    }
-                }
+                if (storedProcessed) { try { this.processedMessageIds = JSON.parse(storedProcessed); } catch (e) { this.processedMessageIds = []; } }
             }
 
-            /* Core Identity / Account Lifecycle */
             async bootAccountEngine() {
                 const session = localStorage.getItem('vemail_account');
-                
                 if (session) {
                     try {
                         const parsed = JSON.parse(session);
-                        // Validate token expiration securely via quick profile lookup
-                        const profileCheck = await fetch(`${this.apiBase}/me`, {
-                            headers: { 'Authorization': `Bearer ${parsed.token}` }
+                        // إضافة كاسر للكاش هنا أيضاً لضمان قراءة التوكن الفعلي
+                        const profileCheck = await fetch(`${this.apiBase}/me?_=${Date.now()}`, {
+                            headers: { 'Authorization': `Bearer ${parsed.token}`, 'Cache-Control': 'no-cache' }
                         });
-
                         if (profileCheck.ok) {
                             this.account = { id: parsed.id, address: parsed.address, password: parsed.password };
                             this.token = parsed.token;
-                            this.revealEmailAddress();
-                            this.startInboxMonitoring();
-                            return;
+                            this.revealEmailAddress(); this.startInboxMonitoring(); return;
                         }
-                    } catch (e) {
-                        console.warn('Session verification rejected, re-generating account.');
-                    }
+                    } catch (e) { console.warn('Session expired.'); }
                 }
-
                 await this.regenerateAccount();
             }
 
             async regenerateAccount() {
                 this.stopInboxMonitoring();
                 document.getElementById('loaderPill').classList.remove('hidden');
-                
                 try {
-                    // Fetch available active public domains
-                    const domRes = await fetch(`${this.apiBase}/domains`);
+                    const domRes = await fetch(`${this.apiBase}/domains?_=${Date.now()}`);
                     const domData = await domRes.json();
                     const targetDomain = domData['hydra:member'][0].domain;
 
-                    // Compute cryptographically randomized account handles
                     const username = 'vemail_' + Math.random().toString(36).substring(2, 9);
                     const address = `${username}@${targetDomain}`;
                     const password = Math.random().toString(36).substring(2, 16);
 
-                    // Execute Creation
                     const createRes = await fetch(`${this.apiBase}/accounts`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ address, password })
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address, password })
                     });
                     const accData = await createRes.json();
 
-                    // Authenticate to acquire stateless session Bearer token
                     const tokenRes = await fetch(`${this.apiBase}/token`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ address, password })
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address, password })
                     });
                     const tokenData = await tokenRes.json();
 
-                    this.account = { id: accData.id, address, password };
-                    this.token = tokenData.token;
-
-                    // Flush old local caches securely
-                    this.messages.clear();
-                    this.processedMessageIds = [];
+                    this.account = { id: accData.id, address, password }; this.token = tokenData.token;
+                    this.messages.clear(); this.processedMessageIds = [];
                     localStorage.setItem('vemail_processed', JSON.stringify([]));
-                    
-                    localStorage.setItem('vemail_account', JSON.stringify({
-                        id: accData.id,
-                        address,
-                        password,
-                        token: tokenData.token
-                    }));
+                    localStorage.setItem('vemail_account', JSON.stringify({ id: accData.id, address, password, token: tokenData.token }));
 
-                    this.revealEmailAddress();
-                    this.renderInboxUI();
-                    this.startInboxMonitoring();
-
-                } catch (error) {
-                    console.error('Account generation error:', error);
-                    this.showToast(this.translations[this.currentLang].toastErr, 'error');
-                }
+                    this.revealEmailAddress(); this.renderInboxUI(); this.startInboxMonitoring();
+                } catch (error) { this.showToast(this.translations[this.currentLang].toastErr, 'error'); }
             }
 
             revealEmailAddress() {
@@ -609,37 +419,32 @@
 
             copyEmail() {
                 if (!this.account) return;
-                navigator.clipboard.writeText(this.account.address).then(() => {
-                    this.showToast(this.translations[this.currentLang].toastCopied, 'success');
-                }).catch(() => {
-                    // Manual selection fallback inside non-HTTPS sandbox environments
-                    const box = document.getElementById('emailAddressBox');
-                    box.select();
-                    document.execCommand('copy');
+                navigator.clipboard.writeText(this.account.address).then(() => { this.showToast(this.translations[this.currentLang].toastCopied, 'success'); })
+                .catch(() => {
+                    const box = document.getElementById('emailAddressBox'); box.select(); document.execCommand('copy');
                     this.showToast(this.translations[this.currentLang].toastCopied, 'success');
                 });
             }
 
-            /* Mailbox Realtime Engine */
             startInboxMonitoring() {
                 this.checkInbox();
                 this.pollInterval = setInterval(() => this.checkInbox(), 4000);
             }
 
-            stopInboxMonitoring() {
-                if (this.pollInterval) clearInterval(this.pollInterval);
-            }
-
-            checkInboxForce() {
-                this.checkInbox(true);
-            }
+            stopInboxMonitoring() { if (this.pollInterval) clearInterval(this.pollInterval); }
+            checkInboxForce() { this.checkInbox(true); }
 
             async checkInbox(force = false) {
                 if (!this.token) return;
-
                 try {
-                    const res = await fetch(`${this.apiBase}/messages?page=1`, {
-                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    // [الحل الجذري لمشكلة عدم ظهور الرسائل]: إضافة Cache-Buster لمنع حفظ المتصفح لنتيجة الصندوق القديمة
+                    const res = await fetch(`${this.apiBase}/messages?page=1&_=${Date.now()}`, {
+                        headers: { 
+                            'Authorization': `Bearer ${this.token}`,
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache',
+                            'Expires': '0'
+                        }
                     });
                     
                     if (!res.ok) return;
@@ -651,21 +456,19 @@
 
                     for (const msg of incomingArray) {
                         if (!this.messages.has(msg.id)) {
-                            // Discover full details including HTML bodies
-                            const detailRes = await fetch(`${this.apiBase}/messages/${msg.id}`, {
-                                headers: { 'Authorization': `Bearer ${this.token}` }
+                            // جلب محتوى الرسالة وتجاوز الكاش أيضاً
+                            const detailRes = await fetch(`${this.apiBase}/messages/${msg.id}?_=${Date.now()}`, {
+                                headers: { 'Authorization': `Bearer ${this.token}`, 'Cache-Control': 'no-cache' }
                             });
                             const fullMsg = await detailRes.json();
                             
                             this.messages.set(msg.id, fullMsg);
                             newFound = true;
 
-                            // Dispatch instant serverless Telegram push if linked
                             const tgChatId = localStorage.getItem('telegram_chat_id');
                             if (tgChatId && !this.processedMessageIds.includes(msg.id)) {
                                 this.processedMessageIds.push(msg.id);
                                 localStorage.setItem('vemail_processed', JSON.stringify(this.processedMessageIds));
-
                                 this.dispatchTelegramForwarding(tgChatId, fullMsg);
                             }
                         }
@@ -673,36 +476,24 @@
 
                     if (newFound || force) {
                         this.renderInboxUI();
-                        if (newFound && !force) {
-                            this.showToast(this.translations[this.currentLang].toastNewMsg, 'success');
-                        }
+                        if (newFound && !force) this.showToast(this.translations[this.currentLang].toastNewMsg, 'success');
                     }
-
-                } catch (error) {
-                    console.error('Mail retrieval exception:', error);
-                }
+                } catch (error) { console.error('Inbox Polling Error:', error); }
             }
 
             renderInboxUI() {
                 const container = document.getElementById('inboxContainer');
-                
                 if (this.messages.size === 0) {
                     container.innerHTML = '';
                     const emptyState = document.getElementById('emptyInboxState').cloneNode(true);
-                    emptyState.classList.remove('hidden');
-                    container.appendChild(emptyState);
-                    return;
+                    emptyState.classList.remove('hidden'); container.appendChild(emptyState); return;
                 }
-
                 container.innerHTML = '';
-                
-                // Sort messages strictly chronologically descending
                 const sorted = Array.from(this.messages.values()).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
                 for (const msg of sorted) {
                     const card = document.createElement('div');
                     card.className = 'bg-brand-cardAlt hover:bg-brand-input border border-brand-border rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 cursor-pointer transition-all hover:scale-[1.01] active:scale-[0.99] group';
-                    
                     const timeFormatted = new Date(msg.createdAt).toLocaleTimeString(this.currentLang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' });
 
                     card.innerHTML = `
@@ -724,179 +515,108 @@
                             </div>
                         </div>
                     `;
-
-                    card.onclick = () => this.openReadingPane(msg.id);
-                    container.appendChild(card);
+                    card.onclick = () => this.openReadingPane(msg.id); container.appendChild(card);
                 }
             }
 
             openReadingPane(msgId) {
-                const msg = this.messages.get(msgId);
-                if (!msg) return;
-
+                const msg = this.messages.get(msgId); if (!msg) return;
                 document.getElementById('readSubject').innerText = msg.subject || 'بدون عنوان';
                 document.getElementById('readFrom').innerText = `${msg.from.name || ''} <${msg.from.address}>`;
 
-                // Safe encapsulated HTML Injection
                 const iframe = document.getElementById('readContentFrame');
                 const contentHtml = msg.html || Object.values(msg.html || {})[0] || `<div style="white-space: pre-wrap; font-family: monospace;">${msg.text || ''}</div>`;
-                
                 iframe.srcdoc = contentHtml;
 
-                // Handle file attachments securely
-                const drawer = document.getElementById('attachmentsDrawer');
-                const wrapper = document.getElementById('attachmentsWrapper');
-                wrapper.innerHTML = '';
-
+                const drawer = document.getElementById('attachmentsDrawer'); const wrapper = document.getElementById('attachmentsWrapper'); wrapper.innerHTML = '';
                 if (msg.attachments && msg.attachments.length > 0) {
-                    drawer.classList.remove('hidden');
-                    drawer.classList.add('flex');
-
+                    drawer.classList.remove('hidden'); drawer.classList.add('flex');
                     for (const att of msg.attachments) {
                         const btn = document.createElement('button');
                         btn.className = 'bg-brand-card hover:bg-brand-primary text-slate-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wide border border-brand-border transition-all flex items-center gap-1.5';
-                        btn.innerHTML = `
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                            <span class="truncate max-w-[120px]">${att.filename}</span>
-                        `;
-                        btn.onclick = () => this.downloadAttachment(msg.id, att.id, att.filename);
-                        wrapper.appendChild(btn);
+                        btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg><span class="truncate max-w-[120px]">${att.filename}</span>`;
+                        btn.onclick = () => this.downloadAttachment(msg.id, att.id, att.filename); wrapper.appendChild(btn);
                     }
-                } else {
-                    drawer.classList.add('hidden');
-                    drawer.classList.remove('flex');
-                }
+                } else { drawer.classList.add('hidden'); drawer.classList.remove('flex'); }
 
-                document.getElementById('readingPaneModal').classList.remove('hidden');
-                document.getElementById('readingPaneModal').classList.add('flex');
+                document.getElementById('readingPaneModal').classList.remove('hidden'); document.getElementById('readingPaneModal').classList.add('flex');
             }
 
             closeReadingPane() {
-                document.getElementById('readingPaneModal').classList.add('hidden');
-                document.getElementById('readingPaneModal').classList.remove('flex');
+                document.getElementById('readingPaneModal').classList.add('hidden'); document.getElementById('readingPaneModal').classList.remove('flex');
                 document.getElementById('readContentFrame').srcdoc = '';
             }
 
             async downloadAttachment(msgId, attId, filename) {
                 try {
-                    const res = await fetch(`${this.apiBase}/messages/${msgId}/attachments/${attId}`, {
-                        headers: { 'Authorization': `Bearer ${this.token}` }
-                    });
-                    const blob = await res.blob();
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                    window.URL.revokeObjectURL(url);
-                } catch (e) {
-                    this.showToast(this.translations[this.currentLang].toastErr, 'error');
-                }
+                    const res = await fetch(`${this.apiBase}/messages/${msgId}/attachments/${attId}?_=${Date.now()}`, { headers: { 'Authorization': `Bearer ${this.token}` } });
+                    const blob = await res.blob(); const url = window.URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename;
+                    document.body.appendChild(a); a.click(); a.remove(); window.URL.revokeObjectURL(url);
+                } catch (e) { this.showToast(this.translations[this.currentLang].toastErr, 'error'); }
             }
 
-            /* Serverless Telegram Push Engine */
             async initiateTelegramSetup() {
-                const drawer = document.getElementById('tgSetupDrawer');
-                drawer.classList.remove('hidden');
-
+                const drawer = document.getElementById('tgSetupDrawer'); drawer.classList.remove('hidden');
                 try {
-                    const res = await fetch('/api/link-telegram?action=generate');
-                    const data = await res.json();
-
+                    const res = await fetch('/api/link-telegram?action=generate'); const data = await res.json();
                     if (!data.success) throw new Error('API Reject');
-
                     document.getElementById('verificationCodePill').innerText = data.code;
                     document.getElementById('deepLinkAnchor').href = data.bot_url;
-
-                    // Trigger serverless polling loop to verify incoming webhook pairing
                     this.startTelegramPairingVerification(data.code);
-
                 } catch (error) {
-                    console.error('Setup failure:', error);
-                    document.getElementById('verificationCodePill').innerText = 'ERROR';
-                    this.showToast(this.translations[this.currentLang].toastErr, 'error');
+                    document.getElementById('verificationCodePill').innerText = 'ERROR'; this.showToast(this.translations[this.currentLang].toastErr, 'error');
                 }
             }
 
             startTelegramPairingVerification(code) {
                 if (this.tgCheckInterval) clearInterval(this.tgCheckInterval);
-
                 let attempts = 0;
                 this.tgCheckInterval = setInterval(async () => {
                     attempts++;
-                    if (attempts > 30) { // Timeout after 60 seconds
-                        clearInterval(this.tgCheckInterval);
-                        document.getElementById('tgPollingSpin').classList.add('hidden');
-                        return;
-                    }
-
+                    if (attempts > 30) { clearInterval(this.tgCheckInterval); document.getElementById('tgPollingSpin').classList.add('hidden'); return; }
                     try {
-                        const res = await fetch(`/api/link-telegram?action=check&code=${code}`);
-                        const checkData = await res.json();
-
+                        const res = await fetch(`/api/link-telegram?action=check&code=${code}`); const checkData = await res.json();
                         if (checkData.linked && checkData.chat_id) {
-                            clearInterval(this.tgCheckInterval);
-                            this.markTelegramAsLinked(checkData.chat_id);
-                            this.showToast(this.translations[this.currentLang].toastLinked, 'success');
+                            clearInterval(this.tgCheckInterval); this.markTelegramAsLinked(checkData.chat_id); this.showToast(this.translations[this.currentLang].toastLinked, 'success');
                         }
-                    } catch (e) {
-                        // Suppress background polling network timeouts
-                    }
+                    } catch (e) {}
                 }, 2000);
             }
 
             bindManualChatId() {
                 const val = document.getElementById('txtManualChatId').value.trim();
-                if (!val || isNaN(val)) {
-                    this.showToast(this.translations[this.currentLang].toastErr, 'error');
-                    return;
-                }
-                this.markTelegramAsLinked(val);
-                this.showToast(this.translations[this.currentLang].toastLinked, 'success');
+                if (!val || isNaN(val)) { this.showToast(this.translations[this.currentLang].toastErr, 'error'); return; }
+                this.markTelegramAsLinked(val); this.showToast(this.translations[this.currentLang].toastLinked, 'success');
             }
 
             markTelegramAsLinked(chatId) {
                 localStorage.setItem('telegram_chat_id', chatId);
-                document.getElementById('tgBadge').classList.remove('hidden');
-                document.getElementById('btnTgDisconnect').classList.remove('hidden');
-                document.getElementById('btnTgConnect').classList.add('hidden');
-                document.getElementById('tgSetupDrawer').classList.add('hidden');
+                document.getElementById('tgBadge').classList.remove('hidden'); document.getElementById('btnTgDisconnect').classList.remove('hidden');
+                document.getElementById('btnTgConnect').classList.add('hidden'); document.getElementById('tgSetupDrawer').classList.add('hidden');
                 if (this.tgCheckInterval) clearInterval(this.tgCheckInterval);
             }
 
             disconnectTelegram() {
                 localStorage.removeItem('telegram_chat_id');
-                document.getElementById('tgBadge').classList.add('hidden');
-                document.getElementById('btnTgDisconnect').classList.add('hidden');
-                document.getElementById('btnTgConnect').classList.remove('hidden');
-                this.showToast(this.translations[this.currentLang].toastUnlinked, 'success');
+                document.getElementById('tgBadge').classList.add('hidden'); document.getElementById('btnTgDisconnect').classList.add('hidden');
+                document.getElementById('btnTgConnect').classList.remove('hidden'); this.showToast(this.translations[this.currentLang].toastUnlinked, 'success');
             }
 
             async dispatchTelegramForwarding(chatId, fullMsg) {
                 try {
                     await fetch('/api/send-message', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            chat_id: chatId,
-                            message_id: fullMsg.id,
-                            subject: fullMsg.subject,
-                            from_name: fullMsg.from.name,
-                            from_address: fullMsg.from.address,
+                            chat_id: chatId, message_id: fullMsg.id, subject: fullMsg.subject,
+                            from_name: fullMsg.from.name, from_address: fullMsg.from.address,
                             text_preview: fullMsg.intro || fullMsg.text || 'No preview available'
                         })
                     });
-                } catch (e) {
-                    console.error('Push forward execution reject:', e);
-                }
+                } catch (e) {}
             }
         }
 
-        // Expose pure framework-agnostic global instance
         window.app = new VeMailApp();
     </script>
-
 </body>
 </html>
