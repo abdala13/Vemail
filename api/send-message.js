@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 📬 <b>New Message Received!</b>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 <b>From:</b> ${safeFromName} &lt;<code>${safeFromAddr}</code>&gt;
-<b>Subject:</b> <b>open Message on website <a href='https://www.vemail.pp.ua/'>viewing</a></b>
+<b>Subject:</b> <b>Visit website to view messages. / لمشاهدة نص الرسالة قم بفتح بزيارة الموقع</b>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ${truncatedPreview}
