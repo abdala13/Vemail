@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- تهيئة وإعداد Tailwind -->
+    <!-- إعدادات Tailwind -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -47,7 +47,7 @@
         };
     </script>
 
-    <!-- سكريبت فوري لمنع وميض التصميم وحفظ الوضع واللغة قبل التحميل -->
+    <!-- مانع وميض التصميم (يحفظ الوضع واللغة بشكل دائم قبل تحميل الصفحة) -->
     <script>
         (function() {
             try {
@@ -89,7 +89,7 @@
 
 <body class="bg-brand-bg text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
     
-    <!-- حاوية التنبيهات -->
+    <!-- نظام الإشعارات المنبثقة -->
     <div id="toast-container" class="fixed top-5 left-5 right-5 md:left-auto md:right-5 flex flex-col gap-3 max-w-sm pointer-events-none transition-all"></div>
 
     <!-- الهيدر -->
@@ -120,12 +120,12 @@
     <!-- المحتوى الرئيسي -->
     <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-8 flex flex-col gap-8">
 
-        <!-- إعلان علوي -->
+        <!-- مساحة إعلانية AdSense -->
         <section class="ads-container w-full rounded-2xl border border-dashed border-brand-border bg-brand-card/30 flex items-center justify-center p-4">
             <span class="text-xs text-slate-500 tracking-widest font-mono" id="lblAdHeader">ADSENSE HEADER - إعلان علوي</span>
         </section>
 
-        <!-- صندوق البريد الرئيسي -->
+        <!-- صندوق الحساب الرئيسي -->
         <section class="glass-panel rounded-3xl p-6 md:p-10 text-center flex flex-col items-center gap-6 shadow-2xl relative overflow-hidden">
             <div class="absolute -top-24 -left-24 w-48 h-48 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none"></div>
             
@@ -162,7 +162,7 @@
             </div>
         </section>
 
-        <!-- قسم تيليجرام -->
+        <!-- قسم ربط تيليجرام -->
         <section class="glass-panel rounded-3xl p-6 border-l-4 border-l-brand-telegram relative overflow-hidden transition-all">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-start gap-4">
@@ -221,12 +221,12 @@
             </div>
         </section>
 
-        <!-- إعلان وسط -->
+        <!-- مساحة إعلانية AdSense -->
         <section class="ads-container w-full rounded-2xl border border-dashed border-brand-border bg-brand-card/30 flex items-center justify-center p-4">
             <span class="text-xs text-slate-500 tracking-widest font-mono" id="lblAdFeed">ADSENSE FEED - إعلان وسط الصندوق</span>
         </section>
 
-        <!-- صندوق الوارد -->
+        <!-- صندوق الوارد المباشر -->
         <section class="glass-panel rounded-3xl p-6 flex flex-col gap-6 shadow-xl">
             <div class="flex items-center justify-between border-b border-brand-border pb-4">
                 <div class="flex items-center gap-3">
@@ -277,7 +277,7 @@
         </div>
     </div>
 
-    <!-- نوافذ الصفحات القانونية -->
+    <!-- نوافذ الصفحات القانونية لـ AdSense -->
     <div id="legalModalWrapper" class="fixed inset-0 z-[99999] bg-brand-bg/90 backdrop-blur-md hidden items-center justify-center p-4 transition-all animate-fade-in">
         <div class="bg-brand-card border border-brand-border w-full max-w-2xl rounded-3xl overflow-hidden flex flex-col shadow-2xl max-h-[85vh]">
             <div class="bg-brand-cardAlt p-5 border-b border-brand-border flex items-center justify-between">
@@ -291,7 +291,7 @@
         </div>
     </div>
 
-    <!-- الفوتر مع الحقوق الثابتة -->
+    <!-- الفوتر مع الحقوق الثابتة والبارزة -->
     <footer class="border-t border-brand-border bg-brand-bg py-8 mt-12">
         <div class="max-w-6xl mx-auto px-4 text-center space-y-4">
             <div class="flex items-center justify-center gap-6 text-xs text-slate-400 font-semibold">
@@ -301,6 +301,7 @@
                 <span>•</span>
                 <button id="btnOpenApi" class="hover:text-brand-primary transition-colors">واجهة المطورين API</button>
             </div>
+            <!-- الحقوق المحفوظة بالكامل كما طلبت -->
             <p class="text-xs text-slate-500 font-mono tracking-wide" dir="ltr">
                 تم التطوير <span class="text-brand-primary font-bold">Abdala hanouna</span> لسنة 2026
             </p>
@@ -527,14 +528,14 @@
 
                             fetch(self.apiBase + '/accounts', {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                                headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ address: address, password: password })
                             })
                             .then(function(accRes) { return accRes.json(); })
                             .then(function(accData) {
                                 fetch(self.apiBase + '/token', {
                                     method: 'POST',
-                                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                                    headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ address: address, password: password })
                                 })
                                 .then(function(tokRes) { return tokRes.json(); })
@@ -597,18 +598,20 @@
                     if (this.pollInterval) clearInterval(this.pollInterval);
                 }
 
+                // [الحل الجذري المطبق]: إزالة أي متغيرات تكسر جدار الحماية، واستخدام مسار API قياسي 100%
                 fetchMessages(isManual) {
                     if (!this.token) return;
                     var self = this;
 
-                    fetch(this.apiBase + '/messages?page=1&_cb=' + Date.now(), {
-                        headers: { 'Authorization': 'Bearer ' + this.token, 'Accept': 'application/json' }
+                    fetch(this.apiBase + '/messages?page=1', {
+                        headers: { 'Authorization': 'Bearer ' + this.token }
                     })
                     .then(function(res) {
                         if (res.status === 401) {
                             self.forceGenerateNewAccount();
                             throw new Error('Expired');
                         }
+                        if (!res.ok) throw new Error('API Reject');
                         return res.json();
                     })
                     .then(function(data) {
@@ -707,8 +710,8 @@
                     if (elFrom && cached && cached.from) elFrom.innerText = (cached.from.name || '') + ' <' + (cached.from.address || '') + '>';
                     if (frame) frame.srcdoc = '<div style="padding:20px;text-align:center;color:#888;font-family:sans-serif;">جاري تحميل محتوى الرسالة...</div>';
 
-                    fetch(this.apiBase + '/messages/' + id + '?_cb=' + Date.now(), {
-                        headers: { 'Authorization': 'Bearer ' + this.token, 'Accept': 'application/json' }
+                    fetch(this.apiBase + '/messages/' + id, {
+                        headers: { 'Authorization': 'Bearer ' + this.token }
                     })
                     .then(function(res) { return res.json(); })
                     .then(function(full) {
@@ -755,7 +758,7 @@
 
                 downloadFile(msgId, attId, name) {
                     var self = this;
-                    fetch(this.apiBase + '/messages/' + msgId + '/attachments/' + attId + '?_cb=' + Date.now(), {
+                    fetch(this.apiBase + '/messages/' + msgId + '/attachments/' + attId, {
                         headers: { 'Authorization': 'Bearer ' + this.token }
                     })
                     .then(function(res) { return res.blob(); })
@@ -906,7 +909,7 @@
                     
                     fetch('/api/send-message', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             chat_id: chatId,
                             message_id: msg.id,
@@ -919,7 +922,7 @@
                 }
             }
 
-            // تشغيل المحرك فورا وبأمان مطلق
+            // تشغيل المحرك
             window.vemailAppInstance = new VeMailEngine();
         });
     </script>
