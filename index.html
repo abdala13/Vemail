@@ -55,8 +55,8 @@
     <script>
         (function() {
             try {
-                var isDark = localStorage.getItem('vemail_dark') !== '0';
-                var lang = localStorage.getItem('vemail_lang') || 'ar';
+                var isDark = localStorage.getItem('vemail_dark') !== '1';
+                var lang = localStorage.getItem('vemail_lang') || 'en';
                 
                 if (isDark) {
                     document.documentElement.classList.add('dark');
